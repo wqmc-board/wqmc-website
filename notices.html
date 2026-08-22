@@ -191,7 +191,8 @@
 
 <script>
 (function () {
-  var SHEET = 'https://docs.google.com/spreadsheets/d/1ytKmrHMg7SD64i7arUeqv4y6hYGssRJjodlGwGnIxIo/gviz/tq?tqx=out:csv&sheet=Notices&headers=1';
+  var BASE = 'https://docs.google.com/spreadsheets/d/1ytKmrHMg7SD64i7arUeqv4y6hYGssRJjodlGwGnIxIo/gviz/tq?tqx=out:csv&headers=1&sheet=';
+  var FEEDS = [BASE + 'Notices', BASE + encodeURIComponent('Form responses 2')];
   var host = document.getElementById('wq-notices');
   var meta = document.getElementById('wq-notice-meta');
   var status = document.getElementById('wq-notice-status');
@@ -238,32 +239,59 @@
 
   function midnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
 
-  fetch(SHEET, { cache: 'no-store' })
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
-    .then(function (text) {
-      var rows = parseCSV(text);
-      if (rows.length < 2) throw new Error('empty');
-      var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
-      var col = function (n) {
-        for (var i = 0; i < head.length; i++) { if (head[i].indexOf(n) === 0) return i; }
-        return -1;
+  var today = midnight(new Date());
+
+  function toItems(text) {
+    var rows = parseCSV(text);
+    if (rows.length < 2) return [];
+    var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+    var col = function () {
+      for (var a = 0; a < arguments.length; a++) {
+        for (var i = 0; i < head.length; i++) {
+          if (head[i].indexOf(arguments[a]) === 0) return i;
+        }
+      }
+      return -1;
+    };
+    var cStatus = col('status'), cDate = col('date'), cWhen = col('when'),
+        cTitle = col('title'), cBody = col('body', 'details'), cTag = col('tag'),
+        cUntil = col('show until', 'take down');
+    if (cTitle < 0 || cBody < 0) return [];
+
+    return rows.slice(1).map(function (r) {
+      var g = function (i) { return i >= 0 && r[i] ? r[i].trim() : ''; };
+      // One sheet keeps Date and When apart; the form has a single When box,
+      // so treat it as a date when it reads like one and as a label when it does not.
+      var d = toDate(g(cDate)) || toDate(g(cWhen));
+      return {
+        status: g(cStatus).toLowerCase(), date: d,
+        when: d ? '' : g(cWhen), title: g(cTitle), body: g(cBody), tag: g(cTag),
+        until: toDate(g(cUntil))
       };
-      var cStatus = col('status'), cDate = col('date'), cWhen = col('when'),
-          cTitle = col('title'), cBody = col('body'), cTag = col('tag'), cUntil = col('show until');
-      if (cTitle < 0 || cBody < 0) throw new Error('columns');
+    }).filter(function (n) {
+      if (!n.title || n.status === 'hidden') return false;
+      if (n.until && midnight(n.until) < today) return false;   // auto-expire
+      return true;
+    });
+  }
 
-      var today = midnight(new Date());
+  function grab(url) {
+    return fetch(url, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.text() : ''; })
+      .catch(function () { return ''; });
+  }
 
-      var items = rows.slice(1).map(function (r) {
-        var g = function (i) { return i >= 0 && r[i] ? r[i].trim() : ''; };
-        return {
-          status: g(cStatus).toLowerCase(), date: toDate(g(cDate)),
-          when: g(cWhen), title: g(cTitle), body: g(cBody), tag: g(cTag),
-          until: toDate(g(cUntil))
-        };
-      }).filter(function (n) {
-        if (!n.title || n.status === 'hidden') return false;
-        if (n.until && midnight(n.until) < today) return false;   // auto-expire
+  Promise.all(FEEDS.map(grab))
+    .then(function (texts) {
+      var items = [];
+      texts.forEach(function (t) { if (t) items = items.concat(toItems(t)); });
+
+      // Same notice posted both ways should only appear once.
+      var seen = {};
+      items = items.filter(function (n) {
+        var k = n.title.toLowerCase().replace(/\s+/g, ' ');
+        if (seen[k]) return false;
+        seen[k] = 1;
         return true;
       });
 
