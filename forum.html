@@ -222,66 +222,36 @@
   <div class="shell">
     <div class="head">
       <p class="label">Submit</p>
-      <h2>Raise an improvement or a notice</h2>
-      <p>The form opens an email to the board with your details filled in, so there is one
-      thread and one record.</p>
+      <h2>Raise an improvement or a question</h2>
+      <p>Two routes, and picking the right one is the difference between a week and a day.</p>
     </div>
-    <form id="wq-form" novalidate>
-      <label>Your name
-        <input name="name" autocomplete="name" required>
-      </label>
-      <label>Block and apartment
-        <input name="apartment" placeholder="e.g. Swift House, Apartment 12" required>
-      </label>
-      <label>You are
-        <select name="status">
-          <option>Leaseholder</option>
-          <option>Resident tenant</option>
-          <option>Landlord of a let apartment</option>
-        </select>
-      </label>
-      <label>Type of submission
-        <select name="kind">
-          <option>Improvement or suggestion</option>
-          <option>Notice to all residents</option>
-          <option>Question for the board</option>
-          <option>Item for the next AGM</option>
-        </select>
-      </label>
-      <label>Subject
-        <input name="subject" required>
-      </label>
-      <label>Details
-        <textarea name="detail" required placeholder="What are you proposing, where does it apply, and what would it change?"></textarea>
-        <span class="hint">If it is a repair, please close this and call Letters on 01733 898589 instead.</span>
-      </label>
-      <button class="btn" type="submit">Send to the board</button>
-      <p class="hint" id="wq-fallback">Prefer to write yourself? Email
-      <a href="mailto:directors@wqmc.org">directors@wqmc.org</a>.</p>
-    </form>
+    <div class="contact-grid">
+      <div class="panel">
+        <h3>Something is broken</h3>
+        <p>Anything reactive &mdash; a failed lift, a leak, a door not closing, lighting out,
+        anything you would call an emergency &mdash; goes to Letters Block Management first.
+        They hold the contractors, the out-of-hours line and the repair history, so reporting
+        it to them is what actually gets someone out.</p>
+        <dl class="dl">
+          <div><dt>Block line</dt><dd><a href="tel:01733898589">01733 898589</a></dd></div>
+          <div><dt>Email</dt><dd><a href="mailto:home@letters.co.uk">home@letters.co.uk</a></dd></div>
+        </dl>
+        <p class="fine">Telling a director instead only adds a step &mdash; we forward it to Letters anyway.</p>
+      </div>
+      <div class="panel accent">
+        <h3>Everything else</h3>
+        <p>Improvements, suggestions, questions about how the blocks are run, items for the
+        next AGM, or something you think every neighbour should know. It reaches all five
+        directors at once, so it cannot sit unread in one inbox.</p>
+        <p><a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSen_nF-NoPa2WI2Yi044-pNGHSW8ZnR1BNMt1yairnbvPpBDg/viewform" target="_blank" rel="noopener">Ask the board</a></p>
+        <p class="fine">Takes a minute. Your name is never published &mdash; questions appear as
+        &ldquo;A leaseholder, Swift House&rdquo; with the answer and the director who gave it.
+        Prefer to write yourself? <a href="mailto:directors@wqmc.org">directors@wqmc.org</a>.</p>
+      </div>
+    </div>
   </div>
 </section>
 <script>
-document.getElementById('wq-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  var f = e.target;
-  if (!f.reportValidity()) return;
-  var d = new FormData(f), g = function (k) { return (d.get(k) || '').toString().trim(); };
-  var subject = '[Forum] ' + g('kind') + ' \u2014 ' + g('subject');
-  var body = [
-    'Name: ' + g('name'),
-    'Block and apartment: ' + g('apartment'),
-    'Status: ' + g('status'),
-    'Type: ' + g('kind'),
-    '',
-    g('detail'),
-    '',
-    '\u2014 Sent from the Welland Quarter residents\u2019 forum'
-  ].join('\n');
-  window.location.href = 'mailto:directors@wqmc.org?subject=' +
-    encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-});
-
 (function () {
   var FEED = 'https://docs.google.com/spreadsheets/d/1ytKmrHMg7SD64i7arUeqv4y6hYGssRJjodlGwGnIxIo/gviz/tq'
            + '?tqx=out:csv&sheet=Q%20and%20A&headers=1';
