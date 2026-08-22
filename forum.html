@@ -186,7 +186,9 @@
     </div>
     <p class="notice-meta" id="wq-qa-meta" hidden></p>
     <div class="qa" id="wq-qa" data-state="fallback">
-      <article class="qa-item answered"><div class="qa-q"><div><h3>Can residents put planters in the communal parking area?</h3><p class="qa-from">A leaseholder, Soar House &middot; asked 14 July 2026</p></div><span class="qa-state">Answered</span></div><div class="qa-a"><p>Yes in principle, but not in the parking bays or on escape routes, and they have to be maintained by whoever puts them there. If a planter is blocking access or has been abandoned the board will ask for it to be moved. Anything fixed to the building needs consent first.</p><p class="qa-by"><b>Joshua Meadhurst</b><span>&middot; 21 July 2026</span></p></div></article><article class="qa-item answered"><div class="qa-q"><div><h3>Why has the bin store been left unlocked?</h3><p class="qa-from">A resident, Swift House &middot; asked 30 June 2026</p></div><span class="qa-state">Answered</span></div><div class="qa-a"><p>The lock was failing and has been replaced. If you find it unlocked again report it to Letters on the block line so it is logged against the door, which is how we get the contractor back at no cost.</p><p class="qa-by"><b>Les Amos</b><span>&middot; 2 July 2026</span></p></div></article><article class="qa-item open"><div class="qa-q"><div><h3>Could we look at EV charging points in the parking area?</h3><p class="qa-from">A leaseholder, Swift House &middot; asked 18 August 2026</p></div><span class="qa-state">With the board</span></div><p class="qa-wait">With the board. An answer will be published here, and on the notice board if it affects everyone.</p></article>
+      <div class="empty"><b>No questions published yet.</b>
+      <span>Questions put to the board are published here with the answer and the director
+      who gave it. Yours could be the first &mdash; use the form above.</span></div>
     </div>
     <p class="hint" id="wq-qa-status" hidden style="margin-top:1rem"></p>
     <p class="hint" style="margin-top:1.25rem">Repairs are not published here &mdash; those go to
@@ -340,7 +342,14 @@
         return 0;
       });
 
-      if (!items.length) throw new Error('none');
+      if (!items.length) {
+        host.innerHTML = '<div class="empty"><b>No questions published yet.</b>'
+          + '<span>Questions put to the board are published here with the answer and the '
+          + 'director who gave it. Yours could be the first \u2014 use the form above.'
+          + '</span></div>';
+        host.setAttribute('data-state', 'live');
+        return;
+      }
       var openCount = 0;
 
       host.innerHTML = items.map(function (n) {
