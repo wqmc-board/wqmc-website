@@ -175,6 +175,25 @@
   </div>
 </section>
 
+<section id="answers">
+  <div class="shell">
+    <div class="head">
+      <p class="label">Asked and answered</p>
+      <h2>What neighbours have raised.</h2>
+      <p>Every question put to the board is published here with the answer and the director who
+      gave it, so nobody has to ask the same thing twice. Names are never published &mdash; just
+      the block.</p>
+    </div>
+    <p class="notice-meta" id="wq-qa-meta" hidden></p>
+    <div class="qa" id="wq-qa" data-state="fallback">
+      <article class="qa-item answered"><div class="qa-q"><div><h3>Can residents put planters in the communal parking area?</h3><p class="qa-from">A leaseholder, Soar House &middot; asked 14 July 2026</p></div><span class="qa-state">Answered</span></div><div class="qa-a"><p>Yes in principle, but not in the parking bays or on escape routes, and they have to be maintained by whoever puts them there. If a planter is blocking access or has been abandoned the board will ask for it to be moved. Anything fixed to the building needs consent first.</p><p class="qa-by"><b>Joshua Meadhurst</b><span>&middot; 21 July 2026</span></p></div></article><article class="qa-item answered"><div class="qa-q"><div><h3>Why has the bin store been left unlocked?</h3><p class="qa-from">A resident, Swift House &middot; asked 30 June 2026</p></div><span class="qa-state">Answered</span></div><div class="qa-a"><p>The lock was failing and has been replaced. If you find it unlocked again report it to Letters on the block line so it is logged against the door, which is how we get the contractor back at no cost.</p><p class="qa-by"><b>Les Amos</b><span>&middot; 2 July 2026</span></p></div></article><article class="qa-item open"><div class="qa-q"><div><h3>Could we look at EV charging points in the parking area?</h3><p class="qa-from">A leaseholder, Swift House &middot; asked 18 August 2026</p></div><span class="qa-state">With the board</span></div><p class="qa-wait">With the board. An answer will be published here, and on the notice board if it affects everyone.</p></article>
+    </div>
+    <p class="hint" id="wq-qa-status" hidden style="margin-top:1rem"></p>
+    <p class="hint" style="margin-top:1.25rem">Repairs are not published here &mdash; those go to
+    Letters and are tracked in the repair history rather than on a public page.</p>
+  </div>
+</section>
+
 <section>
   <div class="shell">
     <div class="cols two">
@@ -188,7 +207,7 @@
         naming anyone publicly.</p>
       </div>
       <div class="panel">
-        <p class="label">Letting your flat</p>
+        <p class="label">Letting your apartment</p>
         <h3 style="margin-top:.6rem">If you are a landlord</h3>
         <p style="color:var(--ink-soft);font-size:var(--step--1);margin-top:.6rem">
         Please pass your tenants the details for Letters and this notice board, and keep your
@@ -211,14 +230,14 @@
       <label>Your name
         <input name="name" autocomplete="name" required>
       </label>
-      <label>Block and flat
-        <input name="flat" placeholder="e.g. Swift House, Flat 12" required>
+      <label>Block and apartment
+        <input name="apartment" placeholder="e.g. Swift House, Apartment 12" required>
       </label>
       <label>You are
         <select name="status">
           <option>Leaseholder</option>
           <option>Resident tenant</option>
-          <option>Landlord of a let flat</option>
+          <option>Landlord of a let apartment</option>
         </select>
       </label>
       <label>Type of submission
@@ -251,7 +270,7 @@ document.getElementById('wq-form').addEventListener('submit', function (e) {
   var subject = '[Forum] ' + g('kind') + ' \u2014 ' + g('subject');
   var body = [
     'Name: ' + g('name'),
-    'Block and flat: ' + g('flat'),
+    'Block and apartment: ' + g('apartment'),
     'Status: ' + g('status'),
     'Type: ' + g('kind'),
     '',
@@ -262,6 +281,123 @@ document.getElementById('wq-form').addEventListener('submit', function (e) {
   window.location.href = 'mailto:directors@wqmc.org?subject=' +
     encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 });
+
+(function () {
+  var FEED = 'https://docs.google.com/spreadsheets/d/1ytKmrHMg7SD64i7arUeqv4y6hYGssRJjodlGwGnIxIo/gviz/tq'
+           + '?tqx=out:csv&sheet=Q%20and%20A&headers=1';
+  var host = document.getElementById('wq-qa');
+  var meta = document.getElementById('wq-qa-meta');
+  var status = document.getElementById('wq-qa-status');
+  if (!host) return;
+
+  var MONTH = ['January','February','March','April','May','June','July','August',
+               'September','October','November','December'];
+
+  function parseCSV(text) {
+    var rows = [], row = [], val = '', q = false, i, c;
+    for (i = 0; i < text.length; i++) {
+      c = text[i];
+      if (q) {
+        if (c === '"') { if (text[i + 1] === '"') { val += '"'; i++; } else { q = false; } }
+        else { val += c; }
+      } else if (c === '"') { q = true; }
+      else if (c === ',') { row.push(val); val = ''; }
+      else if (c === '\n') { row.push(val); rows.push(row); row = []; val = ''; }
+      else if (c !== '\r') { val += c; }
+    }
+    if (val.length || row.length) { row.push(val); rows.push(row); }
+    return rows.filter(function (r) { return r.some(function (x) { return x.trim(); }); });
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (ch) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch];
+    });
+  }
+
+  function toDate(s) {
+    if (!s) return null;
+    var m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+    m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    var d = new Date(s);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  function pretty(d) {
+    return d ? d.getDate() + ' ' + MONTH[d.getMonth()] + ' ' + d.getFullYear() : '';
+  }
+
+  fetch(FEED, { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function (text) {
+      var rows = parseCSV(text);
+      if (rows.length < 2) throw new Error('empty');
+      var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+      var ix = function (n) {
+        for (var i = 0; i < head.length; i++) { if (head[i] === n) return i; }
+        return -1;
+      };
+      var cS = ix('status'), cAsk = ix('asked'), cQ = ix('question'), cF = ix('from'),
+          cA = ix('answer'), cBy = ix('answered by'), cOn = ix('answered'), cT = ix('tag');
+      if (cQ < 0) throw new Error('columns');
+
+      var items = rows.slice(1).map(function (r) {
+        var g = function (i) { return i >= 0 && r[i] ? r[i].trim() : ''; };
+        return {
+          state: g(cS).toLowerCase(), asked: toDate(g(cAsk)), q: g(cQ), from: g(cF),
+          answer: g(cA), by: g(cBy), on: toDate(g(cOn)), tag: g(cT)
+        };
+      }).filter(function (n) { return n.q && n.state !== 'hidden'; });
+
+      items.sort(function (a, b) {
+        var open = function (n) { return n.state === 'open' && !n.answer ? 0 : 1; };
+        if (open(a) !== open(b)) return open(a) - open(b);
+        var da = a.on || a.asked, db = b.on || b.asked;
+        if (da && db) return db - da;
+        return 0;
+      });
+
+      if (!items.length) throw new Error('none');
+      var openCount = 0;
+
+      host.innerHTML = items.map(function (n) {
+        var answered = !!n.answer;
+        var cls = answered ? (n.state === 'noted' ? 'answered' : 'answered')
+                           : 'open';
+        if (!answered) openCount++;
+        var label = answered
+          ? (n.state === 'noted' ? 'Noted' : 'Answered')
+          : 'With the board';
+        var tail = answered
+          ? '<div class="qa-a"><p>' + esc(n.answer) + '</p><p class="qa-by"><b>'
+            + esc(n.by || 'The board') + '</b>'
+            + (n.on ? '<span>&middot; ' + pretty(n.on) + '</span>' : '') + '</p></div>'
+          : '<p class="qa-wait">With the board. An answer will be published here, and on the '
+            + 'notice board if it affects everyone.</p>';
+        return '<article class="qa-item ' + cls + '">'
+          + '<div class="qa-q"><div><h3>' + esc(n.q) + '</h3>'
+          + '<p class="qa-from">' + esc(n.from || 'A resident')
+          + (n.asked ? ' &middot; asked ' + pretty(n.asked) : '') + '</p></div>'
+          + '<span class="qa-state">' + label + '</span></div>' + tail + '</article>';
+      }).join('');
+      host.setAttribute('data-state', 'live');
+
+      if (meta) {
+        meta.innerHTML = '<span class="live"><span class="dot"></span>Live from the board</span>'
+          + '<span>' + items.length + ' question' + (items.length === 1 ? '' : 's')
+          + (openCount ? ' &middot; ' + openCount + ' awaiting an answer' : '') + '</span>';
+        meta.hidden = false;
+      }
+    })
+    .catch(function () {
+      if (!status) return;
+      status.hidden = false;
+      status.textContent = 'Showing the last published answers \u2014 the live feed could not be '
+        + 'reached just now. Please refresh.';
+    });
+})();
 </script>
 </main>
 <footer><div class="shell">
