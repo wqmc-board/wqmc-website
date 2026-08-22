@@ -68,54 +68,10 @@
     </div>
     <p class="notice-meta" id="wq-notice-meta" hidden></p>
     <div class="notices" id="wq-notices" data-state="fallback">
-      <article class="notice info">
-        <p class="when">Autumn<small>2026</small></p>
-        <div>
-          <h3>Lightning protection remediation</h3>
-          <p>Remedial works to the lightning protection system following the annual test. Access to roof level and the basement plant room will be needed; residents will be notified before any interruption to services.</p>
-          <span class="tag">Swift House &amp; Soar House</span>
-        </div>
-      </article>
-      <article class="notice ">
-        <p class="when">31 October<small>2026</small></p>
-        <div>
-          <h3>Draft 2027 service charge budget</h3>
-          <p>The draft budget goes to the board for review. Leaseholders receive the approved budget with their demand; questions on individual figures go to Letters.</p>
-          <span class="tag">Both blocks</span>
-        </div>
-      </article>
-      <article class="notice ">
-        <p class="when">Quarterly<small>Ongoing</small></p>
-        <div>
-          <h3>Fire door and communal area inspections</h3>
-          <p>Routine inspection of communal fire doors, signage, emergency lighting and escape routes. Please keep landings and corridors clear &mdash; nothing stored outside your apartment.</p>
-          <span class="tag">Compliance</span>
-        </div>
-      </article>
-      <article class="notice ">
-        <p class="when">Annual<small>Ongoing</small></p>
-        <div>
-          <h3>Fire risk assessment review</h3>
-          <p>The FRA for each block is reviewed annually and its actions tracked to completion. The current assessment is available to leaseholders on request to the board.</p>
-          <span class="tag">Compliance</span>
-        </div>
-      </article>
-      <article class="notice ">
-        <p class="when">Five-yearly<small>Scheduled</small></p>
-        <div>
-          <h3>Electrical installation condition report</h3>
-          <p>EICR testing of the landlord's supply and communal circuits. Any remedial items are priced and reported to the board before instruction.</p>
-          <span class="tag">Compliance</span>
-        </div>
-      </article>
-      <article class="notice done">
-        <p class="when">Completed<small>August 2026</small></p>
-        <div>
-          <h3>Directors' meeting &mdash; 12 August</h3>
-          <p>The board met to review compliance, planned works and the managing agent's appointment for 2027. Minutes are circulated to members.</p>
-          <span class="tag">Governance</span>
-        </div>
-      </article></div>
+      <div class="empty"><b>Nothing on the board at present.</b>
+      <span>Scheduled works, compliance inspections and board business will appear here as
+      they are arranged. If you have been told about works that are not listed, tell the
+      board.</span></div></div>
     <p class="hint" id="wq-notice-status" hidden></p>
     <div class="callout" style="margin-top:2rem">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283 170" fill="currentColor" role="img" aria-label="Welland Quarter">
@@ -307,7 +263,14 @@
         return 0;
       });
 
-      if (!items.length) throw new Error('none');
+      if (!items.length) {
+        host.innerHTML = '<div class="empty"><b>Nothing on the board at present.</b>'
+          + '<span>Scheduled works, compliance inspections and board business will appear '
+          + 'here as they are arranged. If you have been told about works that are not '
+          + 'listed, tell the board.</span></div>';
+        host.setAttribute('data-state', 'live');
+        return;
+      }
 
       host.innerHTML = items.map(function (n) {
         var cls = STYLE[n.status] === undefined ? '' : STYLE[n.status];
