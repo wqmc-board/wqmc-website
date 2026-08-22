@@ -153,7 +153,7 @@
     <table class="cycle">
       <caption>Recurring inspections &mdash; common parts, both blocks</caption>
       <thead><tr><th scope="col">Item</th><th scope="col">Frequency</th><th scope="col">Carried out by</th></tr></thead>
-      <tbody><tr><td>Fire risk assessment</td><td>Reviewed annually</td><td>Competent assessor, actions tracked by the board</td></tr><tr><td>Fire doors &amp; escape routes</td><td>Quarterly inspection</td><td>Managing agent, with contractor sign-off</td></tr><tr><td>Emergency lighting</td><td>Monthly flick test, annual drain-down</td><td>Contractor via managing agent</td></tr><tr><td>Electrical installation condition report</td><td>Every five years</td><td>NICEIC contractor, remedials priced to the board</td></tr><tr><td>Lightning protection</td><td>Tested annually</td><td>Specialist contractor</td></tr><tr><td>Water hygiene / legionella</td><td>Risk assessment reviewed every two years, monitoring throughout</td><td>Contractor via managing agent</td></tr><tr><td>Lifts</td><td>Six-monthly LOLER thorough examination, servicing between</td><td>Lift contractor and insurer's engineer</td></tr><tr><td>Buildings insurance</td><td>Renewed annually</td><td>Managing agent, board approves the terms</td></tr></tbody>
+      <tbody id="wq-cycle"><tr><td>Fire risk assessment</td><td>Reviewed annually</td><td>Competent assessor, actions tracked by the board</td></tr><tr><td>Fire doors &amp; escape routes</td><td>Quarterly inspection</td><td>Managing agent, with contractor sign-off</td></tr><tr><td>Emergency lighting</td><td>Monthly flick test, annual drain-down</td><td>Contractor via managing agent</td></tr><tr><td>Electrical installation condition report</td><td>Every five years</td><td>NICEIC contractor, remedials priced to the board</td></tr><tr><td>Lightning protection</td><td>Tested annually</td><td>Specialist contractor</td></tr><tr><td>Water hygiene / legionella</td><td>Risk assessment reviewed every two years, monitoring throughout</td><td>Contractor via managing agent</td></tr><tr><td>Lifts</td><td>Six-monthly LOLER thorough examination, servicing between</td><td>Lift contractor and insurer's engineer</td></tr><tr><td>Buildings insurance</td><td>Renewed annually</td><td>Managing agent, board approves the terms</td></tr></tbody>
     </table>
     <p class="hint" style="margin-top:1.5rem">Certificates and assessments for the common parts
     are available to leaseholders on request to
@@ -181,7 +181,7 @@
         <h3 style="margin-top:.6rem">Board meetings and the AGM</h3>
         <p style="color:var(--ink-soft);font-size:var(--step--1);margin-top:.6rem">
         The directors meet through the year and all members are called to the annual general
-        meeting, where the accounts are presented and directors are elected. Notice of the AGM
+        meeting, where the accounts are presented. Notice of the AGM
         is sent to every leaseholder and posted here.</p>
         <p style="margin-top:1.1rem"><a class="btn ghost" href="forum.html">Put an item on the agenda</a></p>
       </div>
@@ -347,6 +347,43 @@
       status.textContent = 'Showing the last published notices \u2014 the live board could not be '
         + 'reached just now. Please refresh, or contact the board if this persists.';
     });
+
+  // ---- compliance year table, live from the Compliance tab ----
+  var cycle = document.getElementById('wq-cycle');
+  if (cycle) {
+    grab(BASE + 'Compliance').then(function (text) {
+      if (!text) return;
+      var rows = parseCSV(text);
+      if (rows.length < 2) return;
+      var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+      var find = function () {
+        for (var a = 0; a < arguments.length; a++) {
+          for (var i = 0; i < head.length; i++) {
+            if (head[i].indexOf(arguments[a]) === 0) return i;
+          }
+        }
+        return -1;
+      };
+      var cItem = find('item', 'check'), cFreq = find('frequency', 'how often'),
+          cBy = find('carried out by', 'by', 'who'), cShow = find('show');
+      if (cItem < 0 || cFreq < 0) return;
+
+      var out = rows.slice(1).map(function (r) {
+        var g = function (i) { return i >= 0 && r[i] ? r[i].trim() : ''; };
+        return { item: g(cItem), freq: g(cFreq), by: g(cBy), show: g(cShow).toLowerCase() };
+      }).filter(function (x) {
+        if (!x.item) return false;
+        return x.show !== 'no' && x.show !== 'hidden' && x.show !== 'false';
+      });
+      if (!out.length) return;
+
+      cycle.innerHTML = out.map(function (x) {
+        return '<tr><td>' + esc(x.item) + '</td><td>' + esc(x.freq) +
+               '</td><td>' + esc(x.by) + '</td></tr>';
+      }).join('');
+      cycle.setAttribute('data-state', 'live');
+    });
+  }
 })();
 </script>
 </main>
