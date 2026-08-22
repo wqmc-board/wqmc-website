@@ -104,7 +104,19 @@ section + section{border-top:1px solid var(--line)}
   border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:3px;
   padding:1.5rem 1.6rem}
 .notice.done{border-left-color:#9FB2B9}
+.notice.done h3{color:var(--muted)}
 .notice.info{border-left-color:#C9A227}
+.notice.urgent{border-left-color:#B3402B;border-left-width:4px;background:#FDF7F5}
+.notice.urgent .when{color:#B3402B}
+.notice.urgent .flag{display:inline-block;font-family:"General Sans",sans-serif;font-weight:500;
+  font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:#B3402B;
+  border-radius:2px;padding:.22rem .5rem;margin-bottom:.6rem}
+.notice-meta{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  flex-wrap:wrap;margin-bottom:1.1rem;font-size:.75rem;color:var(--muted);
+  font-family:"General Sans",sans-serif;letter-spacing:.06em}
+.notice-meta .live{display:inline-flex;align-items:center;gap:.45rem}
+.notice-meta .dot{width:.4rem;height:.4rem;border-radius:999px;background:var(--teal);
+  display:inline-block}
 .notice .when{font-family:"General Sans",sans-serif;font-weight:500;font-size:var(--step--1);
   color:var(--teal-deep);letter-spacing:.04em}
 .notice .when small{display:block;color:var(--muted);font-weight:400;letter-spacing:.1em;

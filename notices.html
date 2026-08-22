@@ -66,7 +66,8 @@
       affected flats directly. Teal means upcoming, amber means it affects access or
       services, grey means done.</p>
     </div>
-    <div class="notices">
+    <p class="notice-meta" id="wq-notice-meta" hidden></p>
+    <div class="notices" id="wq-notices" data-state="fallback">
       <article class="notice info">
         <p class="when">Autumn<small>2026</small></p>
         <div>
@@ -115,6 +116,7 @@
           <span class="tag">Governance</span>
         </div>
       </article></div>
+    <p class="hint" id="wq-notice-status" hidden></p>
     <div class="callout" style="margin-top:2rem">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283 170" fill="currentColor" role="img" aria-label="Welland Quarter">
   <mask id="wq-k" maskUnits="userSpaceOnUse" x="0" y="0" width="283" height="170">
@@ -186,6 +188,139 @@
     </div>
   </div>
 </section>
+
+<script>
+(function () {
+  var SHEET = 'https://docs.google.com/spreadsheets/d/1ytKmrHMg7SD64i7arUeqv4y6hYGssRJjodlGwGnIxIo/gviz/tq?tqx=out:csv&sheet=Notices&headers=1';
+  var host = document.getElementById('wq-notices');
+  var meta = document.getElementById('wq-notice-meta');
+  var status = document.getElementById('wq-notice-status');
+  if (!host) return;
+
+  var STYLE = { urgent:'urgent', access:'info', upcoming:'', ongoing:'', completed:'done' };
+  var MONTH = ['January','February','March','April','May','June','July','August',
+               'September','October','November','December'];
+
+  function parseCSV(text) {
+    var rows = [], row = [], val = '', q = false, i, c;
+    for (i = 0; i < text.length; i++) {
+      c = text[i];
+      if (q) {
+        if (c === '"') { if (text[i + 1] === '"') { val += '"'; i++; } else { q = false; } }
+        else { val += c; }
+      } else if (c === '"') { q = true; }
+      else if (c === ',') { row.push(val); val = ''; }
+      else if (c === '\n') { row.push(val); rows.push(row); row = []; val = ''; }
+      else if (c !== '\r') { val += c; }
+    }
+    if (val.length || row.length) { row.push(val); rows.push(row); }
+    return rows.filter(function (r) { return r.some(function (x) { return x.trim(); }); });
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (ch) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch];
+    });
+  }
+
+  // Accepts 31/10/2026, 2026-10-31, or Google's Date(2026,9,31) serial form.
+  function toDate(s) {
+    if (!s) return null;
+    var m = s.match(/^Date\((\d+),(\d+),(\d+)/);
+    if (m) return new Date(+m[1], +m[2], +m[3]);
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+    m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    var d = new Date(s);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  function midnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+
+  fetch(SHEET, { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function (text) {
+      var rows = parseCSV(text);
+      if (rows.length < 2) throw new Error('empty');
+      var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+      var col = function (n) {
+        for (var i = 0; i < head.length; i++) { if (head[i].indexOf(n) === 0) return i; }
+        return -1;
+      };
+      var cStatus = col('status'), cDate = col('date'), cWhen = col('when'),
+          cTitle = col('title'), cBody = col('body'), cTag = col('tag'), cUntil = col('show until');
+      if (cTitle < 0 || cBody < 0) throw new Error('columns');
+
+      var today = midnight(new Date());
+
+      var items = rows.slice(1).map(function (r) {
+        var g = function (i) { return i >= 0 && r[i] ? r[i].trim() : ''; };
+        return {
+          status: g(cStatus).toLowerCase(), date: toDate(g(cDate)),
+          when: g(cWhen), title: g(cTitle), body: g(cBody), tag: g(cTag),
+          until: toDate(g(cUntil))
+        };
+      }).filter(function (n) {
+        if (!n.title || n.status === 'hidden') return false;
+        if (n.until && midnight(n.until) < today) return false;   // auto-expire
+        return true;
+      });
+
+      items.sort(function (a, b) {
+        var rank = function (n) {
+          if (n.status === 'urgent') return 0;
+          if (n.status === 'completed') return 3;
+          return n.date ? 1 : 2;
+        };
+        var ra = rank(a), rb = rank(b);
+        if (ra !== rb) return ra - rb;
+        if (a.date && b.date) return ra === 3 ? b.date - a.date : a.date - b.date;
+        return 0;
+      });
+
+      if (!items.length) throw new Error('none');
+
+      host.innerHTML = items.map(function (n) {
+        var cls = STYLE[n.status] === undefined ? '' : STYLE[n.status];
+        var when, sub = '';
+        if (n.date) {
+          when = n.date.getDate() + ' ' + MONTH[n.date.getMonth()];
+          sub = String(n.date.getFullYear());
+          var days = Math.round((midnight(n.date) - today) / 86400000);
+          if (days === 0) sub = 'Today';
+          else if (days === 1) sub = 'Tomorrow';
+          else if (days > 1 && days <= 14) sub = 'In ' + days + ' days';
+        } else {
+          when = n.when || (n.status === 'ongoing' ? 'Ongoing' : '');
+          sub = n.status === 'completed' ? 'Completed' : (n.status === 'ongoing' ? 'Recurring' : '');
+        }
+        return '<article class="notice ' + cls + '">' +
+          '<p class="when">' + esc(when) + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</p>' +
+          '<div>' + (n.status === 'urgent' ? '<span class="flag">Urgent</span>' : '') +
+          '<h3>' + esc(n.title) + '</h3><p>' + esc(n.body) + '</p>' +
+          (n.tag ? '<span class="tag">' + esc(n.tag) + '</span>' : '') +
+          '</div></article>';
+      }).join('');
+      host.setAttribute('data-state', 'live');
+
+      if (meta) {
+        var now = new Date();
+        meta.innerHTML = '<span class="live"><span class="dot"></span>Live board</span>' +
+          '<span>' + items.length + ' notice' + (items.length === 1 ? '' : 's') +
+          ' &middot; checked ' + now.getDate() + ' ' + MONTH[now.getMonth()] + ' at ' +
+          ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2) + '</span>';
+        meta.hidden = false;
+      }
+    })
+    .catch(function () {
+      if (!status) return;
+      status.hidden = false;
+      status.textContent = 'Showing the last published notices \u2014 the live board could not be '
+        + 'reached just now. Please refresh, or contact the board if this persists.';
+    });
+})();
+</script>
 </main>
 <footer><div class="shell">
   <div class="f-in">
