@@ -82,7 +82,7 @@ section + section{border-top:1px solid var(--line)}
 .card .arch{width:26px;color:var(--teal);margin-bottom:1rem}
 
 /* ---- contact ---- */
-.contact-grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr))}
+.contact-grid{align-items:start;display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr))}
 .panel{border:1px solid var(--line);border-radius:3px;padding:1.75rem;background:#fff}
 .panel.accent{background:var(--cream);border-color:#E2DCCB}
 .panel h3{font-size:var(--step-1)}
@@ -92,11 +92,11 @@ section + section{border-top:1px solid var(--line)}
   font-size:.6875rem;font-family:"General Sans",sans-serif;font-weight:500;margin:0}
 .dl dd{margin:0;overflow-wrap:anywhere}
 .people{list-style:none;margin:1.1rem 0 0;padding:0;display:grid;gap:.15rem}
-.people li{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 0;
+.people li{display:grid;gap:.15rem;padding:.7rem 0;
   border-bottom:1px solid var(--line);font-size:var(--step--1);flex-wrap:wrap}
 .people li:last-child{border-bottom:0}
 .people b{font-weight:500}
-.people span{color:var(--muted)}
+.people span{color:var(--muted);font-size:var(--step--1);line-height:1.45}
 
 /* ---- notice board ---- */
 .notices{display:grid;gap:1rem}
