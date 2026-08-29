@@ -80,6 +80,8 @@ section + section{border-top:1px solid var(--line)}
 .card h3{font-size:var(--step-1)}
 .card p{color:var(--ink-soft);font-size:var(--step--1);margin-top:.55rem}
 .card .arch{width:26px;color:var(--teal);margin-bottom:1rem}
+.card p.note{color:var(--muted);border-top:1px solid var(--line);padding-top:.7rem;
+  margin-top:.9rem}
 
 /* ---- contact ---- */
 .contact-grid{align-items:start;display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr))}
