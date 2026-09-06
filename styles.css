@@ -252,3 +252,50 @@ footer .fine{margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid rgba(255
 footer nav{gap:.15rem;flex-direction:column}
 footer nav a{color:#B9C7CD;padding:.3rem 0}
 footer nav a:hover{background:none;color:#fff}
+
+/* ---- parking page: register form (new classes only) ---- */
+.pv-bar{background:#7A2E12;color:#FFE9DF;font-family:"General Sans",sans-serif;
+  font-weight:500;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;
+  text-align:center;padding:.55rem 1rem;position:relative;z-index:30}
+.rules{list-style:none;margin:1.75rem 0 0;padding:0;display:grid;gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.rules li{background:#fff;padding:1.25rem 1.5rem;display:grid;
+  grid-template-columns:2.25rem 1fr;gap:.25rem 1rem;align-items:start}
+.rules b{font-family:"General Sans",sans-serif;font-weight:500;font-size:var(--step-0);
+  color:var(--ink);grid-column:2}
+.rules span{grid-column:2;font-size:var(--step--1);color:var(--ink-soft);line-height:1.6}
+.rules i{grid-column:1;grid-row:1 / span 2;font-style:normal;font-family:"General Sans",sans-serif;
+  font-weight:500;font-size:1.25rem;color:var(--teal);line-height:1.2}
+.wq-form{display:grid;gap:1.25rem;margin-top:1.75rem}
+.wq-row{display:grid;gap:1.25rem}
+@media(min-width:620px){.wq-row.two{grid-template-columns:1fr 1fr}}
+.wq-f{display:grid;gap:.4rem}
+.wq-f label{font-family:"General Sans",sans-serif;font-weight:500;font-size:var(--step--1);
+  color:var(--ink)}
+.wq-f .req{color:#A84B2F}
+.wq-f small{font-size:.75rem;color:var(--muted);line-height:1.5}
+.wq-f input,.wq-f select,.wq-f textarea{font:400 var(--step-0)/1.5 Satoshi,ui-sans-serif,
+  system-ui,sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);
+  border-radius:2px;padding:.7rem .8rem;width:100%;transition:border-color .18s ease,
+  box-shadow .18s ease}
+.wq-f input:focus,.wq-f select:focus,.wq-f textarea:focus{outline:0;border-color:var(--teal);
+  box-shadow:0 0 0 3px rgba(27,124,158,.14)}
+.wq-f input[aria-invalid=true],.wq-f select[aria-invalid=true]{border-color:#A84B2F}
+.wq-reg input{text-transform:uppercase;letter-spacing:.12em;font-weight:500}
+.wq-check{display:grid;grid-template-columns:1.15rem 1fr;gap:.75rem;align-items:start;
+  font-size:var(--step--1);color:var(--ink-soft);line-height:1.55}
+.wq-check input{width:1.15rem;height:1.15rem;margin:.2rem 0 0;accent-color:var(--teal)}
+.wq-sub{border-top:1px solid var(--line);padding-top:1.5rem;display:grid;gap:1rem;
+  justify-items:start}
+.wq-msg{border-radius:3px;padding:1.1rem 1.25rem;font-size:var(--step--1);line-height:1.6;
+  border:1px solid}
+.wq-msg[hidden]{display:none}
+.wq-msg.ok{background:#EDF6F2;border-color:#BFDCCF;color:#1F4634}
+.wq-msg.bad{background:#FBF0EC;border-color:#E4C6BA;color:#7A2E12}
+.wq-msg.wait{background:var(--mist);border-color:var(--line);color:var(--ink-soft)}
+.wq-msg b{display:block;font-family:"General Sans",sans-serif;font-weight:500;
+  font-size:var(--step-0);margin-bottom:.3rem}
+.plan{margin-top:1.75rem;border:1px solid var(--line);border-radius:3px;background:var(--mist);
+  display:grid;place-items:center;padding:clamp(2rem,6vw,4rem);text-align:center;gap:.6rem}
+.plan b{font-family:"General Sans",sans-serif;font-weight:500;color:var(--ink-soft)}
+.plan span{font-size:var(--step--1);color:var(--muted);max-width:28rem}
