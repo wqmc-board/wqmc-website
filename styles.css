@@ -299,7 +299,7 @@ footer nav a:hover{background:none;color:#fff}
   display:grid;place-items:center;padding:clamp(2rem,6vw,4rem);text-align:center;gap:.6rem}
 .plan b{font-family:"General Sans",sans-serif;font-weight:500;color:var(--ink-soft)}
 .plan span{font-size:var(--step--1);color:var(--muted);max-width:28rem}
-.planfig{margin:1.75rem 0 0;display:grid;gap:1rem}
+.planfig{margin:1.75rem auto 0;display:grid;gap:1rem;max-width:44rem}
 .planfig .planlink{display:block;border:1px solid var(--line);border-radius:3px;
   background:#fff;padding:clamp(.5rem,1.2vw,1rem);line-height:0}
 .planfig img{display:block;width:100%;height:auto;aspect-ratio:2400/1677;
