@@ -301,8 +301,9 @@ footer nav a:hover{background:none;color:#fff}
 .plan span{font-size:var(--step--1);color:var(--muted);max-width:28rem}
 .planfig{margin:1.75rem 0 0;display:grid;gap:1rem}
 .planfig .planlink{display:block;border:1px solid var(--line);border-radius:3px;
-  background:#fff;padding:.75rem;line-height:0}
-.planfig img{width:100%;height:auto;border-radius:2px}
+  background:#fff;padding:clamp(.5rem,1.2vw,1rem);line-height:0}
+.planfig img{display:block;width:100%;height:auto;aspect-ratio:2400/1677;
+  object-fit:contain;border-radius:2px}
 .planfig figcaption{display:flex;flex-wrap:wrap;gap:.6rem 1.75rem}
 .planfig .key{display:inline-flex;align-items:center;gap:.6rem;font-size:var(--step--1);
   color:var(--ink-soft)}
