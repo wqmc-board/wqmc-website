@@ -310,4 +310,5 @@ footer nav a:hover{background:none;color:#fff}
 .planfig .sw{width:1.6rem;height:1rem;border-radius:2px;flex:none}
 .planfig .sw.on{background:var(--teal);border:1px solid var(--teal-deep)}
 .planfig .sw.off{background:#F3F5F6;border:1px solid var(--line)}
+.planfig .sw.cage{background:#CEE4EB;border:1px solid var(--teal-deep)}
 .planfig .fine{margin:0}
