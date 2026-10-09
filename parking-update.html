@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Update your parking record — Welland Quarter</title>
 <meta name="description" content="Basement parking at Swift House and Soar House: the rules, and the vehicle register.">
-<meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="googlebot" content="noindex,nofollow">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&f[]=satoshi@400,500&display=swap">
 <link rel="stylesheet" href="styles.css">
@@ -14,7 +12,6 @@
 <style>[hidden]{display:none!important}.wq-f>label{display:block}.wq-f .req{display:inline}</style>
 </head>
 <body>
-<p class="pv-bar">Preview &mdash; not published. This page is not linked from the website and is not indexed by search engines.</p>
 <header class="top"><div class="shell top-in">
   <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283 170" fill="currentColor" role="img" aria-label="Welland Quarter">
   <mask id="wq-k" maskUnits="userSpaceOnUse" x="0" y="0" width="283" height="170">
@@ -33,7 +30,8 @@
     <a href="index.html">The development</a>
     <a href="notices.html">Notice board</a>
     <a href="forum.html">Residents' forum</a>
-    <a href="parking-preview.html" aria-current="page">Parking</a>
+    <a href="parking.html" aria-current="page">Parking</a>
+    <a href="update-records.html">Update your details</a>
     <a href="index.html#contact">Contact</a>
   </nav>
 </div></header>
@@ -46,7 +44,7 @@
 add one, remove one, or tell the board about someone using your bay for a short time. Your
 bay and details stay as they are; only the change is recorded.</p>
 <div class="hero-meta">
-<div><b>New here?</b><span><a href="parking-preview.html#register">Register first</a></span></div>
+<div><b>New here?</b><span><a href="parking.html#register">Register first</a></span></div>
 <div><b>Vehicles per bay</b><span>Up to three</span></div>
 <div><b>Temporary entries</b><span>End automatically</span></div>
 </div></div></section>
@@ -77,7 +75,7 @@ register, a link is on its way. If nothing arrives within an hour, email
 <p>Nobody has to remember a login. The link only goes to the email address already on the
 register for that apartment, which is the same check the board uses when it confirms a bay.
 If you have changed email address, <a href="update-records.html">ask for your record to be updated</a> first.</p>
-<p class="fine">Board preview: <a href="?t=preview#update">open Step 2 without a link</a>.</p></div>
+</div>
 </div></div></section>
 
 <section id="update" hidden>
@@ -168,8 +166,9 @@ the cleaners are booked by the board, which records their vehicles and makes sur
         <a href="index.html">The development</a>
         <a href="notices.html">Notice board</a>
         <a href="forum.html">Residents' forum</a>
-        <a href="parking-preview.html" aria-current="page">Parking</a>
-        <a href="index.html#contact">Contact</a>
+        <a href="parking.html" aria-current="page">Parking</a>
+        <a href="update-records.html">Update your details</a>
+    <a href="index.html#contact">Contact</a>
       </nav>
     </div>
     <div style="max-width:17rem">
@@ -189,7 +188,7 @@ the cleaners are booked by the board, which records their vehicles and makes sur
 <script>
 (function(){
   /* Same Apps Script web app as the register form. */
-  var ENDPOINT = "";
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbyLiUsMjiMAKhQtMncQDZjXoI8Y2GfwaetvRul_1xzaoPk1qYXJ1xRN_7-GhuNfnWwVxQ/exec";
   var q = new URLSearchParams(location.search), token = q.get('t');
   var aptSel = document.getElementById('u-apt');
   [['Swift',36],['Soar',35]].forEach(function(b){
@@ -204,7 +203,7 @@ the cleaners are booked by the board, which records their vehicles and makes sur
     var a=aptSel.value, m=document.getElementById('u-email').value.trim();
     if(!a||!/^\S+@\S+\.\S+$/.test(m)){ document.getElementById('u-req-bad-t').textContent='Select your apartment and enter a valid email.'; return show(['u-req-ok','u-req-bad'],'u-req-bad'); }
     if(!ENDPOINT){ document.getElementById('u-req-bad-t').textContent='Preview mode: not connected to the register yet, so no email has been sent.'; return show(['u-req-ok','u-req-bad'],'u-req-bad'); }
-    fetch(ENDPOINT,{method:'POST',body:JSON.stringify({action:'link',apartment:a,email:m}),headers:{'Content-Type':'text/plain;charset=utf-8'}})
+    fetch(ENDPOINT,{method:'POST',body:JSON.stringify({action:'park_link',apartment:a,email:m}),headers:{'Content-Type':'text/plain;charset=utf-8'}})
       .finally(function(){ show(['u-req-ok','u-req-bad'],'u-req-ok'); }); /* same reply either way */
   });
 
@@ -216,8 +215,8 @@ the cleaners are booked by the board, which records their vehicles and makes sur
     rec.textContent=r.apartment+', bay '+r.bay+' \u2014 '+r.vehicles.map(function(v){return v.registration+' ('+v.vehicle+')';}).join(', ');
     r.vehicles.forEach(function(v){ var o=document.createElement('option'); o.value=v.registration; o.textContent=v.registration+' \u2014 '+v.vehicle; old.appendChild(o); });
   }
-  if(token==='preview' || !ENDPOINT) fill({apartment:'Swift 12',bay:'27',vehicles:[{registration:'AB12 CDE',vehicle:'Volkswagen Golf, grey'}]});
-  else fetch(ENDPOINT+'?action=record&t='+encodeURIComponent(token)).then(function(r){return r.json();})
+  if(!ENDPOINT) fill({apartment:'Swift 12',bay:'27',vehicles:[{registration:'AB12 CDE',vehicle:'Volkswagen Golf, grey'}]});
+  else fetch(ENDPOINT+'?action=park_record&t='+encodeURIComponent(token)).then(function(r){return r.json();})
     .then(function(r){ if(r.ok) fill(r); else rec.textContent='This link has expired. Please request a new one.'; });
 
   var type=document.getElementById('u-type'), form=document.getElementById('u-form');
@@ -239,7 +238,7 @@ the cleaners are booked by the board, which records their vehicles and makes sur
     if(bads.length){ bt.textContent='Please complete the fields marked with an asterisk.'; show(['u-ok','u-bad'],'u-bad'); return bads[0].focus(); }
     var f=document.getElementById('u-from').value, t=document.getElementById('u-to').value;
     if(f && t && (t<f || (new Date(t)-new Date(f))/864e5>14)){ bt.textContent='The dates must run forwards and cover no more than 14 days.'; return show(['u-ok','u-bad'],'u-bad'); }
-    var d={action:'update',token:token,submitted:new Date().toISOString()};
+    var d={action:'park_update',token:token,submitted:new Date().toISOString()};
     new FormData(form).forEach(function(v,k){ var el=form.elements[k]; if(el && !(el.closest&&el.closest('[hidden]'))) d[k]=String(v).trim(); });
     if(!ENDPOINT||token==='preview'){ bt.textContent='Preview mode: the update is valid but nothing has been sent.'; return show(['u-ok','u-bad'],'u-bad'); }
     fetch(ENDPOINT,{method:'POST',body:JSON.stringify(d),headers:{'Content-Type':'text/plain;charset=utf-8'}})
