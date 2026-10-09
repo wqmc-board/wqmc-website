@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Update your parking record — Welland Quarter</title>
+<meta name="description" content="Basement parking at Swift House and Soar House: the rules, and the vehicle register.">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&f[]=satoshi@400,500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>[hidden]{display:none!important}</style>
+</head>
+<body>
+<p class="pv-bar">Preview &mdash; not published. This page is not linked from the website and is not indexed by search engines.</p>
+<header class="top"><div class="shell top-in">
+  <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283 170" fill="currentColor" role="img" aria-label="Welland Quarter">
+  <mask id="wq-k" maskUnits="userSpaceOnUse" x="0" y="0" width="283" height="170">
+    <rect x="0" y="0" width="283" height="170" fill="#fff"/>
+    <path fill="#000" d="M52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5ZM3 63.5H280V66H3Z"/>
+    <path fill="#000" fill-rule="evenodd" d="M41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM44.5 85L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85ZM168.5 85L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 85Z"/>
+  </mask>
+  <g mask="url(#wq-k)">
+    <path d="M3 45H280V85H3Z"/>
+    <path fill-rule="evenodd" d="M23 85L23 57.5A56.5 56.5 0 0 1 136 57.5L136 85ZM41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM147 85L147 57.5A56.5 56.5 0 0 1 260 57.5L260 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85Z"/>
+    <path d="M0 151.5H283V170H0Z"/>
+  </g>
+  <path fill-rule="evenodd" d="M44.5 150L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 150ZM52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM168.5 150L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 150ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5Z"/>
+</svg><span><b>Welland Quarter</b><span>Swift House &amp; Soar House</span></span></a>
+  <nav aria-label="Main">
+    <a href="index.html">The development</a>
+    <a href="notices.html">Notice board</a>
+    <a href="forum.html">Residents' forum</a>
+    <a href="parking-preview.html" aria-current="page">Parking</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</div></header>
+<main>
+<main>
+<section class="hero"><div class="shell hero-in">
+<p class="label">Parking &middot; already registered</p>
+<h1>Update your record without starting again.</h1>
+<p class="lede">If your apartment's bay is already on the register, you can change a vehicle,
+add one, remove one, or tell the board about someone using your bay for a short time. Your
+bay and details stay as they are; only the change is recorded.</p>
+<div class="hero-meta">
+<div><b>New here?</b><span><a href="parking-preview.html#register">Register first</a></span></div>
+<div><b>Vehicles per bay</b><span>Up to three</span></div>
+<div><b>Temporary entries</b><span>End automatically</span></div>
+</div></div></section>
+
+<section id="link-step" style="background:var(--cream);border-block:1px solid var(--line)">
+<div class="shell"><div class="cols two" style="align-items:start;gap:2.5rem">
+<div>
+<div class="head"><p class="label">Step 1</p><h2>Get your update link.</h2>
+<p>Enter your apartment and the email address you registered with. If they match the
+register, a private link is emailed to that address. The link opens your record and works
+for 24 hours. Nothing is shown on this page, so a bay or vehicle cannot be looked up by
+guesswork.</p></div>
+<form class="wq-form" id="u-req" novalidate>
+<div class="wq-row two">
+<div class="wq-f"><label for="u-apt">Apartment <span class="req">*</span></label>
+<select id="u-apt" name="apartment" required><option value="">Select your apartment</option></select></div>
+<div class="wq-f"><label for="u-email">Registered email <span class="req">*</span></label>
+<input id="u-email" name="email" type="email" autocomplete="email" required></div>
+</div>
+<div class="wq-sub"><button class="btn" type="submit">Email me my link</button></div>
+</form>
+<div class="wq-msg ok" id="u-req-ok" hidden><b>Check your inbox.</b>If the details match the
+register, a link is on its way. If nothing arrives within an hour, email
+<a href="mailto:directors@wqmc.org">directors@wqmc.org</a>.</div>
+<div class="wq-msg bad" id="u-req-bad" hidden><b>Not sent.</b><span id="u-req-bad-t"></span></div>
+</div>
+<div class="panel"><h3>Why a link rather than a password</h3>
+<p>Nobody has to remember a login. The link only goes to the email address already on the
+register for that apartment, which is the same check the board uses when it confirms a bay.
+If you have changed email address, contact the board and it will update the record by hand.</p>
+<p class="fine">Board preview: <a href="?t=preview#update">open Step 2 without a link</a>.</p></div>
+</div></div></section>
+
+<section id="update" hidden>
+<div class="shell">
+<div class="head"><p class="label">Step 2</p><h2>What has changed?</h2>
+<p id="u-who">Your record: <b id="u-rec">loading&hellip;</b></p></div>
+<form class="wq-form" id="u-form" novalidate style="max-width:46rem">
+<div class="wq-f"><label for="u-type">Type of update <span class="req">*</span></label>
+<select id="u-type" name="type" required>
+<option value="">Select</option>
+<optgroup label="Permanent">
+<option value="replace">Replace my vehicle (new car)</option>
+<option value="add">Add another vehicle to my bay (up to three)</option>
+<option value="remove">Remove a vehicle</option>
+</optgroup>
+<optgroup label="Temporary &mdash; ends automatically">
+<option value="visitor">A visitor using my bay</option>
+<option value="holiday">A friend or family member using my bay while I am away</option>
+<option value="hire">Hire or courtesy car while mine is off the road</option>
+<option value="carer">Carer, nurse or medical visit</option>
+<option value="contractor">My own contractor working in my apartment</option>
+</optgroup>
+</select></div>
+
+<div class="wq-f" data-for="replace remove"><label for="u-old">Vehicle being replaced or removed</label>
+<select id="u-old" name="old_registration"><option value="">Select</option></select></div>
+
+<div data-for="replace add visitor holiday hire carer contractor">
+<div class="wq-row two">
+<div class="wq-f"><label for="u-reg">Registration <span class="req">*</span></label>
+<input id="u-reg" name="registration" maxlength="10" autocapitalize="characters" spellcheck="false" data-req></div>
+<div class="wq-f"><label for="u-make">Make and model <span class="req">*</span></label>
+<input id="u-make" name="vehicle" data-req></div>
+</div>
+<div class="wq-row two" style="margin-top:1.25rem">
+<div class="wq-f"><label for="u-colour">Colour <span class="req">*</span></label>
+<input id="u-colour" name="colour" data-req></div>
+<div class="wq-f" data-for="visitor holiday hire carer contractor"><label for="u-driver">Driver's name</label>
+<input id="u-driver" name="driver"><small>So a director can tell who the car belongs to.</small></div>
+</div></div>
+
+<div class="wq-row two" data-for="visitor holiday hire carer contractor">
+<div class="wq-f"><label for="u-from">From <span class="req">*</span></label><input id="u-from" name="from" type="date" data-req></div>
+<div class="wq-f"><label for="u-to">Until <span class="req">*</span></label><input id="u-to" name="to" type="date" data-req>
+<small>Up to 14 days. The entry drops off the register the day after.</small></div>
+</div>
+
+<label class="wq-check" data-for="holiday"><input type="checkbox" name="key_left" data-req>
+<span>I will leave a key for this car in the key safe in the estate office, so it can be moved if necessary. <span class="req">*</span></span></label>
+
+<p class="fine" data-for="visitor holiday carer contractor">Your bay must be empty for the period, and these uses
+need a director's agreement. You will get an email when it is approved; until then the car should park on the street.</p>
+
+<div class="wq-f"><label for="u-notes">Anything the board should know</label><textarea id="u-notes" name="notes" rows="3"></textarea></div>
+<div class="wq-sub"><button class="btn" type="submit" id="u-submit">Send update</button></div>
+</form>
+<div class="wq-msg ok" id="u-ok" hidden><b>Update received.</b>A confirmation has been sent to your registered email.</div>
+<div class="wq-msg bad" id="u-bad" hidden><b>Not sent.</b><span id="u-bad-t"></span></div>
+
+<div class="panel" style="margin-top:2rem;max-width:46rem"><h3>Contractors working for the company</h3>
+<p>You do not need to do anything. The pump engineer, electricians, fire stopping, Colt and
+the cleaners are booked by the board, which records their vehicles and makes sure a space is available.</p></div>
+</div></section>
+</main>
+<footer><div class="shell">
+  <div class="f-in">
+    <div style="max-width:22rem">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283 170" fill="currentColor" role="img" aria-label="Welland Quarter">
+  <mask id="wq-k" maskUnits="userSpaceOnUse" x="0" y="0" width="283" height="170">
+    <rect x="0" y="0" width="283" height="170" fill="#fff"/>
+    <path fill="#000" d="M52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5ZM3 63.5H280V66H3Z"/>
+    <path fill="#000" fill-rule="evenodd" d="M41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM44.5 85L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85ZM168.5 85L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 85Z"/>
+  </mask>
+  <g mask="url(#wq-k)">
+    <path d="M3 45H280V85H3Z"/>
+    <path fill-rule="evenodd" d="M23 85L23 57.5A56.5 56.5 0 0 1 136 57.5L136 85ZM41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM147 85L147 57.5A56.5 56.5 0 0 1 260 57.5L260 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85Z"/>
+    <path d="M0 151.5H283V170H0Z"/>
+  </g>
+  <path fill-rule="evenodd" d="M44.5 150L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 150ZM52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM168.5 150L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 150ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5Z"/>
+</svg>
+      <b>Welland Quarter</b>
+      <p>Swift House &amp; Soar House, Market Harborough. Managed on behalf of the
+      leaseholders by Welland Quarter Management Company Ltd.</p>
+    </div>
+    <div>
+      <b>Pages</b>
+      <nav aria-label="Footer">
+        <a href="index.html">The development</a>
+        <a href="notices.html">Notice board</a>
+        <a href="forum.html">Residents' forum</a>
+        <a href="parking-preview.html" aria-current="page">Parking</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+    <div style="max-width:17rem">
+      <b>Repairs</b>
+      <p>Report anything broken to Letters Block Management first —
+      <a href="tel:+441733898589">01733 898589</a>.</p>
+      <b style="margin-top:1.4rem">The board</b>
+      <p><a href="mailto:directors@wqmc.org">directors@wqmc.org</a></p>
+    </div>
+  </div>
+  <p class="fine">Welland Quarter Management Company Ltd (company no. 06985043) is the
+  resident-owned management company for Swift House and Soar House. This site is
+  information for leaseholders and residents and does not vary the terms of any lease.
+  Nothing here is legal advice.</p>
+</div></footer>
+
+<script>
+(function(){
+  /* Same Apps Script web app as the register form. */
+  var ENDPOINT = "";
+  var q = new URLSearchParams(location.search), token = q.get('t');
+  var aptSel = document.getElementById('u-apt');
+  [['Swift',36],['Soar',35]].forEach(function(b){
+    var g=document.createElement('optgroup'); g.label=b[0]+' House'; aptSel.appendChild(g);
+    for(var n=1;n<=b[1];n++){ if(n===13)continue; var o=document.createElement('option');
+      o.value=b[0]+' '+n; o.textContent='Apartment '+n; g.appendChild(o);} });
+
+  function show(ids,on){ ids.forEach(function(i){ document.getElementById(i).hidden = (i!==on); }); }
+
+  document.getElementById('u-req').addEventListener('submit',function(e){
+    e.preventDefault();
+    var a=aptSel.value, m=document.getElementById('u-email').value.trim();
+    if(!a||!/^\S+@\S+\.\S+$/.test(m)){ document.getElementById('u-req-bad-t').textContent='Select your apartment and enter a valid email.'; return show(['u-req-ok','u-req-bad'],'u-req-bad'); }
+    if(!ENDPOINT){ document.getElementById('u-req-bad-t').textContent='Preview mode: not connected to the register yet, so no email has been sent.'; return show(['u-req-ok','u-req-bad'],'u-req-bad'); }
+    fetch(ENDPOINT,{method:'POST',body:JSON.stringify({action:'link',apartment:a,email:m}),headers:{'Content-Type':'text/plain;charset=utf-8'}})
+      .finally(function(){ show(['u-req-ok','u-req-bad'],'u-req-ok'); }); /* same reply either way */
+  });
+
+  if(!token) return;
+  document.getElementById('update').hidden=false;
+  document.getElementById('link-step').hidden=true;
+  var rec=document.getElementById('u-rec'), old=document.getElementById('u-old');
+  function fill(r){
+    rec.textContent=r.apartment+', bay '+r.bay+' \u2014 '+r.vehicles.map(function(v){return v.registration+' ('+v.vehicle+')';}).join(', ');
+    r.vehicles.forEach(function(v){ var o=document.createElement('option'); o.value=v.registration; o.textContent=v.registration+' \u2014 '+v.vehicle; old.appendChild(o); });
+  }
+  if(token==='preview' || !ENDPOINT) fill({apartment:'Swift 12',bay:'27',vehicles:[{registration:'AB12 CDE',vehicle:'Volkswagen Golf, grey'}]});
+  else fetch(ENDPOINT+'?action=record&t='+encodeURIComponent(token)).then(function(r){return r.json();})
+    .then(function(r){ if(r.ok) fill(r); else rec.textContent='This link has expired. Please request a new one.'; });
+
+  var type=document.getElementById('u-type'), form=document.getElementById('u-form');
+  var today=new Date().toISOString().slice(0,10);
+  document.getElementById('u-from').min=today; document.getElementById('u-to').min=today;
+  function sync(){ var t=type.value;
+    form.querySelectorAll('[data-for]').forEach(function(el){ el.hidden = !t || el.dataset.for.split(' ').indexOf(t)<0; }); }
+  type.addEventListener('change',sync); sync();
+  document.getElementById('u-reg').addEventListener('input',function(){ this.value=this.value.toUpperCase().replace(/[^A-Z0-9 ]/g,''); });
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault(); var bads=[], bt=document.getElementById('u-bad-t');
+    if(!type.value) bads.push(type);
+    form.querySelectorAll('[data-req]').forEach(function(f){
+      if(f.closest('[hidden]')) return;
+      var empty = f.type==='checkbox' ? !f.checked : !f.value.trim();
+      f.setAttribute('aria-invalid',empty?'true':'false'); if(empty) bads.push(f); });
+    if((type.value==='replace'||type.value==='remove') && !old.value) bads.push(old);
+    if(bads.length){ bt.textContent='Please complete the fields marked with an asterisk.'; show(['u-ok','u-bad'],'u-bad'); return bads[0].focus(); }
+    var f=document.getElementById('u-from').value, t=document.getElementById('u-to').value;
+    if(f && t && (t<f || (new Date(t)-new Date(f))/864e5>14)){ bt.textContent='The dates must run forwards and cover no more than 14 days.'; return show(['u-ok','u-bad'],'u-bad'); }
+    var d={action:'update',token:token,submitted:new Date().toISOString()};
+    new FormData(form).forEach(function(v,k){ var el=form.elements[k]; if(el && !(el.closest&&el.closest('[hidden]'))) d[k]=String(v).trim(); });
+    if(!ENDPOINT||token==='preview'){ bt.textContent='Preview mode: the update is valid but nothing has been sent.'; return show(['u-ok','u-bad'],'u-bad'); }
+    fetch(ENDPOINT,{method:'POST',body:JSON.stringify(d),headers:{'Content-Type':'text/plain;charset=utf-8'}})
+      .then(function(r){return r.json();}).then(function(r){ if(r.ok){ form.hidden=true; show(['u-ok','u-bad'],'u-ok'); } else { bt.textContent=r.error||'Please try again.'; show(['u-ok','u-bad'],'u-bad'); } })
+      .catch(function(){ bt.textContent='Please try again, or email directors@wqmc.org.'; show(['u-ok','u-bad'],'u-bad'); });
+  });
+})();
+</script>
+</body>
+</html>
