@@ -4,28 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Update your parking record — Welland Quarter</title>
-<meta name="description" content="Basement parking at Swift House and Soar House: the rules, and the vehicle register.">
+<meta name="description" content="Change a vehicle already on the Welland Quarter basement register, or tell the board about temporary use of your bay.">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&f[]=satoshi@400,500&display=swap">
 <link rel="stylesheet" href="styles.css">
+<link rel="canonical" href="https://www.wqmc.org/parking-update.html">
+<meta name="theme-color" content="#FCFCFB">
+<meta property="og:site_name" content="Welland Quarter">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Update your parking record — Welland Quarter">
+<meta property="og:description" content="Change a vehicle already on the Welland Quarter basement register, or tell the board about temporary use of your bay.">
+<meta property="og:url" content="https://www.wqmc.org/parking-update.html">
+<meta property="og:image" content="https://www.wqmc.org/share.png">
+<meta property="og:image:alt" content="Welland Quarter, Swift House and Soar House, Market Harborough.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>[hidden]{display:none!important}.wq-f>label{display:block}.wq-f .req{display:inline}</style>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <header class="top"><div class="shell top-in">
-  <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283 170" fill="currentColor" role="img" aria-label="Welland Quarter">
-  <mask id="wq-k" maskUnits="userSpaceOnUse" x="0" y="0" width="283" height="170">
-    <rect x="0" y="0" width="283" height="170" fill="#fff"/>
-    <path fill="#000" d="M52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5ZM3 63.5H280V66H3Z"/>
-    <path fill="#000" fill-rule="evenodd" d="M41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM44.5 85L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85ZM168.5 85L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 85Z"/>
-  </mask>
-  <g mask="url(#wq-k)">
-    <path d="M3 45H280V85H3Z"/>
-    <path fill-rule="evenodd" d="M23 85L23 57.5A56.5 56.5 0 0 1 136 57.5L136 85ZM41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM147 85L147 57.5A56.5 56.5 0 0 1 260 57.5L260 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85Z"/>
-    <path d="M0 151.5H283V170H0Z"/>
-  </g>
-  <path fill-rule="evenodd" d="M44.5 150L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 150ZM52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM168.5 150L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 150ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5Z"/>
-</svg><span><b>Welland Quarter</b><span>Swift House &amp; Soar House</span></span></a>
+  <a class="brand" href="index.html"><img class="mark" src="mark.svg" alt="" width="46" height="28"><span><b>Welland Quarter</b><span>Swift House &amp; Soar House</span></span></a>
   <nav aria-label="Main">
     <a href="index.html">The development</a>
     <a href="notices.html">Notice board</a>
@@ -35,8 +36,7 @@
     <a href="index.html#contact">Contact</a>
   </nav>
 </div></header>
-<main>
-<main>
+<main id="content" tabindex="-1">
 <section class="hero"><div class="shell hero-in">
 <p class="label">Parking &middot; already registered</p>
 <h1>Update your record without starting again.</h1>
@@ -66,10 +66,10 @@ guesswork.</p></div>
 </div>
 <div class="wq-sub"><button class="btn" type="submit">Email me my link</button></div>
 </form>
-<div class="wq-msg ok" id="u-req-ok" hidden><b>Check your inbox.</b>If the details match the
+<div class="wq-msg ok" id="u-req-ok" role="status" hidden><b>Check your inbox.</b>If the details match the
 register, a link is on its way. If nothing arrives within an hour, email
 <a href="mailto:directors@wqmc.org">directors@wqmc.org</a>.</div>
-<div class="wq-msg bad" id="u-req-bad" hidden><b>Not sent.</b><span id="u-req-bad-t"></span></div>
+<div class="wq-msg bad" id="u-req-bad" role="alert" hidden><b>Not sent.</b><span id="u-req-bad-t"></span></div>
 </div>
 <div class="panel"><h3>Why a link rather than a password</h3>
 <p>Nobody has to remember a login. The link only goes to the email address already on the
@@ -132,8 +132,8 @@ need a director's agreement. You will get an email when it is approved; until th
 <div class="wq-f"><label for="u-notes">Anything the board should know</label><textarea id="u-notes" name="notes" rows="3"></textarea></div>
 <div class="wq-sub"><button class="btn" type="submit" id="u-submit">Send update</button></div>
 </form>
-<div class="wq-msg ok" id="u-ok" hidden><b>Update received.</b>A confirmation has been sent to your registered email.</div>
-<div class="wq-msg bad" id="u-bad" hidden><b>Not sent.</b><span id="u-bad-t"></span></div>
+<div class="wq-msg ok" id="u-ok" role="status" hidden><b>Update received.</b>A confirmation has been sent to your registered email.</div>
+<div class="wq-msg bad" id="u-bad" role="alert" hidden><b>Not sent.</b><span id="u-bad-t"></span></div>
 
 <div class="panel" style="margin-top:2rem;max-width:46rem"><h3>Contractors working for the company</h3>
 <p>You do not need to do anything. The pump engineer, electricians, fire stopping, Colt and
@@ -143,19 +143,7 @@ the cleaners are booked by the board, which records their vehicles and makes sur
 <footer><div class="shell">
   <div class="f-in">
     <div style="max-width:22rem">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283 170" fill="currentColor" role="img" aria-label="Welland Quarter">
-  <mask id="wq-k" maskUnits="userSpaceOnUse" x="0" y="0" width="283" height="170">
-    <rect x="0" y="0" width="283" height="170" fill="#fff"/>
-    <path fill="#000" d="M52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5ZM3 63.5H280V66H3Z"/>
-    <path fill="#000" fill-rule="evenodd" d="M41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM44.5 85L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85ZM168.5 85L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 85Z"/>
-  </mask>
-  <g mask="url(#wq-k)">
-    <path d="M3 45H280V85H3Z"/>
-    <path fill-rule="evenodd" d="M23 85L23 57.5A56.5 56.5 0 0 1 136 57.5L136 85ZM41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM147 85L147 57.5A56.5 56.5 0 0 1 260 57.5L260 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85Z"/>
-    <path d="M0 151.5H283V170H0Z"/>
-  </g>
-  <path fill-rule="evenodd" d="M44.5 150L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 150ZM52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM168.5 150L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 150ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5Z"/>
-</svg>
+      <img class="mark" src="mark-light.svg" alt="" width="52" height="31">
       <b>Welland Quarter</b>
       <p>Swift House &amp; Soar House, Market Harborough. Managed on behalf of the
       leaseholders by Welland Quarter Management Company Ltd.</p>
@@ -168,7 +156,7 @@ the cleaners are booked by the board, which records their vehicles and makes sur
         <a href="forum.html">Residents' forum</a>
         <a href="parking.html" aria-current="page">Parking</a>
         <a href="update-records.html">Update your details</a>
-    <a href="index.html#contact">Contact</a>
+        <a href="index.html#contact">Contact</a>
       </nav>
     </div>
     <div style="max-width:17rem">
