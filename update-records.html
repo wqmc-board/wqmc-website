@@ -8,24 +8,25 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&f[]=satoshi@400,500&display=swap">
 <link rel="stylesheet" href="styles.css">
+<link rel="canonical" href="https://www.wqmc.org/update-records.html">
+<meta name="theme-color" content="#FCFCFB">
+<meta property="og:site_name" content="Welland Quarter">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Update your contact record — Welland Quarter">
+<meta property="og:description" content="Ask the Welland Quarter board to update the contact details held for your apartment.">
+<meta property="og:url" content="https://www.wqmc.org/update-records.html">
+<meta property="og:image" content="https://www.wqmc.org/share.png">
+<meta property="og:image:alt" content="Welland Quarter, Swift House and Soar House, Market Harborough.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>[hidden]{display:none!important}.wq-f>label{display:block}.wq-f .req{display:inline}</style>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <header class="top"><div class="shell top-in">
-  <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283 170" fill="currentColor" role="img" aria-label="Welland Quarter">
-  <mask id="wq-k" maskUnits="userSpaceOnUse" x="0" y="0" width="283" height="170">
-    <rect x="0" y="0" width="283" height="170" fill="#fff"/>
-    <path fill="#000" d="M52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5ZM3 63.5H280V66H3Z"/>
-    <path fill="#000" fill-rule="evenodd" d="M41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM44.5 85L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85ZM168.5 85L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 85Z"/>
-  </mask>
-  <g mask="url(#wq-k)">
-    <path d="M3 45H280V85H3Z"/>
-    <path fill-rule="evenodd" d="M23 85L23 57.5A56.5 56.5 0 0 1 136 57.5L136 85ZM41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM147 85L147 57.5A56.5 56.5 0 0 1 260 57.5L260 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85Z"/>
-    <path d="M0 151.5H283V170H0Z"/>
-  </g>
-  <path fill-rule="evenodd" d="M44.5 150L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 150ZM52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM168.5 150L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 150ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5Z"/>
-</svg><span><b>Welland Quarter</b><span>Swift House &amp; Soar House</span></span></a>
+  <a class="brand" href="index.html"><img class="mark" src="mark.svg" alt="" width="46" height="28"><span><b>Welland Quarter</b><span>Swift House &amp; Soar House</span></span></a>
   <nav aria-label="Main">
     <a href="index.html">The development</a>
     <a href="notices.html">Notice board</a>
@@ -35,7 +36,7 @@
     <a href="index.html#contact">Contact</a>
   </nav>
 </div></header>
-<main>
+<main id="content" tabindex="-1">
 <section class="hero"><div class="shell hero-in">
 <p class="label">Your record</p>
 <h1>Keep the board's details for your apartment up to date.</h1>
@@ -51,7 +52,7 @@ anything is updated.</p>
 <div class="shell"><div class="cols two" style="align-items:start;gap:2.5rem">
 <div>
 <form class="wq-form" id="rc-form" novalidate>
-<h3 style="margin:0">About you</h3>
+<h2 class="form-title">About you</h2>
 <div class="wq-row two">
 <div class="wq-f"><label for="rc-apt">Apartment <span class="req">*</span></label>
 <select id="rc-apt" name="apartment" required><option value="">Select the apartment</option></select></div>
@@ -66,7 +67,7 @@ anything is updated.</p>
 </div>
 <div class="wq-f"><label for="rc-tel">Your telephone</label><input id="rc-tel" name="tel" type="tel" autocomplete="tel"></div>
 
-<h3 style="margin:1rem 0 0">What has changed</h3>
+<h2 class="form-title spaced">What has changed</h2>
 <p class="fine" style="margin:0">Fill in only the details that are new or different. Leave everything else blank.</p>
 <div class="wq-row two">
 <div class="wq-f" data-not="Tenant"><label for="rc-lh1">Leaseholder name (1)</label><input id="rc-lh1" name="lh1"></div>
@@ -92,9 +93,9 @@ anything is updated.</p>
 <label class="wq-check"><input type="checkbox" name="declare" required><span>I confirm I am entitled to ask for this change and that the details are correct. <span class="req">*</span></span></label>
 <div class="wq-sub"><button class="btn" type="submit" id="rc-submit">Send to the directors</button></div>
 </form>
-<div class="wq-msg wait" id="rc-wait" hidden><b>Sending&hellip;</b>One moment.</div>
-<div class="wq-msg ok" id="rc-ok" hidden><b>Sent for approval.</b><span id="rc-ok-t">The directors have your request. You will get an email confirming it now, and another once it has been decided.</span></div>
-<div class="wq-msg bad" id="rc-bad" hidden><b>Not sent.</b><span id="rc-bad-t"></span></div>
+<div class="wq-msg wait" id="rc-wait" role="status" hidden><b>Sending&hellip;</b>One moment.</div>
+<div class="wq-msg ok" id="rc-ok" role="status" hidden><b>Sent for approval.</b><span id="rc-ok-t">The directors have your request. You will get an email confirming it now, and another once it has been decided.</span></div>
+<div class="wq-msg bad" id="rc-bad" role="alert" hidden><b>Not sent.</b><span id="rc-bad-t"></span></div>
 </div>
 <div>
 <div class="panel"><h3>What happens next</h3>
@@ -113,19 +114,7 @@ correct what is held, email <a href="mailto:directors@wqmc.org">directors@wqmc.o
 <footer><div class="shell">
   <div class="f-in">
     <div style="max-width:22rem">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283 170" fill="currentColor" role="img" aria-label="Welland Quarter">
-  <mask id="wq-k" maskUnits="userSpaceOnUse" x="0" y="0" width="283" height="170">
-    <rect x="0" y="0" width="283" height="170" fill="#fff"/>
-    <path fill="#000" d="M52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5ZM3 63.5H280V66H3Z"/>
-    <path fill="#000" fill-rule="evenodd" d="M41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM44.5 85L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85ZM168.5 85L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 85Z"/>
-  </mask>
-  <g mask="url(#wq-k)">
-    <path d="M3 45H280V85H3Z"/>
-    <path fill-rule="evenodd" d="M23 85L23 57.5A56.5 56.5 0 0 1 136 57.5L136 85ZM41 85L41 57.5A38.5 38.5 0 0 1 118 57.5L118 85ZM147 85L147 57.5A56.5 56.5 0 0 1 260 57.5L260 85ZM165 85L165 57.5A38.5 38.5 0 0 1 242 57.5L242 85Z"/>
-    <path d="M0 151.5H283V170H0Z"/>
-  </g>
-  <path fill-rule="evenodd" d="M44.5 150L44.5 57.5A35 35 0 0 1 114.5 57.5L114.5 150ZM52 141.5L52 57.5A27.5 27.5 0 0 1 107 57.5L107 141.5ZM168.5 150L168.5 57.5A35 35 0 0 1 238.5 57.5L238.5 150ZM176 141.5L176 57.5A27.5 27.5 0 0 1 231 57.5L231 141.5Z"/>
-</svg>
+      <img class="mark" src="mark-light.svg" alt="" width="52" height="31">
       <b>Welland Quarter</b>
       <p>Swift House &amp; Soar House, Market Harborough. Managed on behalf of the
       leaseholders by Welland Quarter Management Company Ltd.</p>
@@ -136,8 +125,9 @@ correct what is held, email <a href="mailto:directors@wqmc.org">directors@wqmc.o
         <a href="index.html">The development</a>
         <a href="notices.html">Notice board</a>
         <a href="forum.html">Residents' forum</a>
-        <a href="update-records.html">Update your details</a>
-    <a href="index.html#contact">Contact</a>
+        <a href="parking.html">Parking</a>
+        <a href="update-records.html" aria-current="page">Update your details</a>
+        <a href="index.html#contact">Contact</a>
       </nav>
     </div>
     <div style="max-width:17rem">
