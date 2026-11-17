@@ -8,6 +8,18 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&f[]=satoshi@400,500&display=swap">
 <link rel="stylesheet" href="styles.css">
+<style>
+.site-banner{background:var(--cream);border-bottom:1px solid #E2DCCB}
+.site-banner-in{display:flex;gap:1.35rem;align-items:flex-start;padding:1.5rem 0}
+.site-banner .mark{width:34px;height:auto;flex:none;margin-top:.2rem}
+.site-banner h2{font-size:var(--step-1);margin:.35rem 0 0}
+.site-banner p{color:var(--ink-soft);font-size:var(--step--1);margin-top:.55rem;max-width:48rem}
+@media(max-width:560px){.site-banner-in{flex-direction:column;gap:.9rem}}
+#changing{padding:clamp(2rem,4.5vw,3.25rem) 0}
+#changing .head{margin-bottom:1.5rem}
+#changing .card p + p{margin-top:.7rem}
+#changing .fine{margin-top:1.35rem}
+</style>
 <link rel="canonical" href="https://www.wqmc.org/">
 <meta name="theme-color" content="#FCFCFB">
 <meta property="og:site_name" content="Welland Quarter">
@@ -71,6 +83,52 @@
   </nav>
 </div></header>
 <main id="content" tabindex="-1">
+<aside class="site-banner" aria-labelledby="agent-change-title">
+  <div class="shell site-banner-in">
+    <img class="mark" src="mark.svg" alt="" width="34" height="20">
+    <div>
+      <p class="label">Notice</p>
+      <h2 id="agent-change-title">Changes for 2027</h2>
+      <p>This is for everyone at Welland Quarter, tenants as well as leaseholders. Letters Block Management stand down on 31 December 2026. Hegarty Property Management take over on 1 January 2027.</p>
+    </div>
+  </div>
+</aside>
+
+<section id="changing" aria-labelledby="changing-title">
+  <div class="shell">
+    <div class="head">
+      <p class="label">For everyone here</p>
+      <h2 id="changing-title">What's changing</h2>
+      <p>Leaseholders, tenants and landlords each have a note below.</p>
+    </div>
+    <div class="cols three">
+      <div class="card">
+        <div class="arch"><img class="mark" src="mark.svg" alt="" width="26" height="16"></div>
+        <h3>Managing agent</h3>
+        <p>Letters Block Management stand down on 31 December 2026. From 1 January 2027, Hegarty Property Management take over.</p>
+        <dl class="dl">
+          <div><dt>Web</dt><dd><a href="https://www.hegartypm.co.uk/">Hegarty Property Management</a></dd></div>
+          <div><dt>Email</dt><dd><a href="mailto:hello@hegartypm.co.uk">hello@hegartypm.co.uk</a></dd></div>
+          <div><dt>Phone</dt><dd><a href="tel:+441604953890">01604 953890</a></dd></div>
+        </dl>
+      </div>
+      <div class="card">
+        <div class="arch"><img class="mark" src="mark.svg" alt="" width="26" height="16"></div>
+        <h3>2027 service charge</h3>
+        <p>For leaseholders. A letter has been emailed to each leaseholder. The aim is to keep payments at the same level as this year. Final figures will be confirmed in the next couple of weeks.</p>
+        <p>From 1 January 2027, payments go to Hegarty's client account, as set out in that letter. Do not pay Letters for 2027. Demands are half-yearly. Balances will be confirmed after the handover from Letters.</p>
+        <p>Please email a copy of your lease, or your floor area, to <a href="mailto:directors@wqmc.org">directors@wqmc.org</a>.</p>
+      </div>
+      <div class="card">
+        <div class="arch"><img class="mark" src="mark.svg" alt="" width="26" height="16"></div>
+        <h3>Vehicles and bays</h3>
+        <p>Every vehicle at Welland Quarter must be registered, including tenants' and residents' vehicles. Register on the <a href="parking.html">parking page</a>.</p>
+        <p>An unregistered vehicle may receive a parking charge notice if parking management is introduced later. Landlords, please pass this on to your tenants.</p>
+      </div>
+    </div>
+    <p class="fine">Questions? Email <a href="mailto:directors@wqmc.org">directors@wqmc.org</a>.</p>
+  </div>
+</section>
 
 <section class="hero">
   <div class="hero-art"><img class="mark" src="mark.svg" alt="" width="283" height="170"></div>
