@@ -21,6 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>[hidden]{display:none!important}.wq-f>label{display:block}.wq-f .req{display:inline}</style>
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -112,16 +113,30 @@
     <div class="cols two" style="align-items:start;gap:2.5rem">
       <div>
         <form class="wq-form" id="wq-park-form" novalidate>
-          <div class="wq-row two">
-            <div class="wq-f">
+          <div class="wq-who name-first">
+            <fieldset class="wq-bldg-set" id="p-bldg-set">
+              <legend>Building <span class="req">*</span></legend>
+              <div class="wq-bldg">
+                <label class="wq-bldg-btn">
+                  <input type="radio" name="building" value="Swift" required>
+                  <span>Swift House</span>
+                </label>
+                <label class="wq-bldg-btn">
+                  <input type="radio" name="building" value="Soar" required>
+                  <span>Soar House</span>
+                </label>
+              </div>
+            </fieldset>
+            <div class="wq-f wq-flat">
+              <label for="p-apt">Apartment <span class="req">*</span></label>
+              <select id="p-apt" name="apartment" required class="is-waiting">
+                <option value="">Choose your building first</option>
+              </select>
+              <small id="p-apt-code" hidden></small>
+            </div>
+            <div class="wq-f wq-pair">
               <label for="p-name">Your full name <span class="req">*</span></label>
               <input id="p-name" name="name" type="text" autocomplete="name" required>
-            </div>
-            <div class="wq-f">
-              <label for="p-apt">Apartment <span class="req">*</span></label>
-              <select id="p-apt" name="apartment" required>
-                <option value="">Select your apartment</option>
-              </select>
             </div>
           </div>
 
@@ -210,6 +225,10 @@
           <span id="p-msg-bad-t">Please try again in a moment. If it keeps failing, email the
           details to <a href="mailto:directors@wqmc.org">directors@wqmc.org</a> instead &mdash;
           name, apartment, telephone, and the vehicle's registration, make and colour.</span></div>
+        <div class="wq-msg wait" id="p-msg-preview" role="status" hidden>
+          <b>Preview: not submitted</b>
+          <span id="p-msg-preview-t"></span>
+          <pre id="p-msg-preview-json" class="wq-preview-json"></pre></div>
       </div>
 
       <div>
@@ -404,46 +423,97 @@ own bay and both are registered.</p>
   /* Paste the Apps Script web app address between the quotes to go live. */
   var ENDPOINT = "https://script.google.com/macros/s/AKfycbyLiUsMjiMAKhQtMncQDZjXoI8Y2GfwaetvRul_1xzaoPk1qYXJ1xRN_7-GhuNfnWwVxQ/exec";
 
+  var BLOCKS = {Swift:36, Soar:35}; /* no apartment 13 in either house */
   var sel = document.getElementById('p-apt');
-  function add(block, n){
-    var o = document.createElement('option');
-    o.value = block + ' ' + n;
-    o.textContent = block + ' House, apartment ' + n;
-    sel.appendChild(o);
+  var bldgSet = document.getElementById('p-bldg-set');
+  var aptNote = document.getElementById('p-apt-code');
+
+  function syncAptNote(){
+    if (!sel.value){ aptNote.hidden = true; aptNote.textContent = ''; return; }
+    aptNote.hidden = false;
+    aptNote.textContent = 'Will be sent as ' + sel.value + '.';
   }
-  [['Swift',36],['Soar',35]].forEach(function(b){
-    var g = document.createElement('optgroup');
-    g.label = b[0] + ' House';
-    sel.appendChild(g);
-    for (var n = 1; n <= b[1]; n++){
-      if (n === 13) continue;              /* there is no 13 in either block */
-      var o = document.createElement('option');
-      o.value = b[0] + ' ' + n;
-      o.textContent = 'Apartment ' + n;
-      g.appendChild(o);
+  function paintBuildings(){
+    var radios = bldgSet.querySelectorAll('input[type=radio]');
+    for (var i = 0; i < radios.length; i++){
+      radios[i].parentNode.classList.toggle('is-on', radios[i].checked);
     }
-  });
+  }
+  function fillApartments(block){
+    while (sel.firstChild) sel.removeChild(sel.firstChild);
+    var ph = document.createElement('option');
+    ph.value = '';
+    ph.textContent = 'Select your apartment';
+    sel.appendChild(ph);
+    for (var n = 1; n <= BLOCKS[block]; n++){
+      if (n === 13) continue;
+      var o = document.createElement('option');
+      o.value = block + ' ' + n;          /* same value the sheet already stores */
+      o.textContent = 'Apartment ' + n;
+      sel.appendChild(o);
+    }
+    sel.classList.remove('is-waiting');
+    sel.value = '';
+    syncAptNote();
+  }
+  function waitingApartment(){
+    while (sel.firstChild) sel.removeChild(sel.firstChild);
+    var ph = document.createElement('option');
+    ph.value = '';
+    ph.textContent = 'Choose your building first';
+    sel.appendChild(ph);
+    sel.classList.add('is-waiting');
+    sel.value = '';
+    syncAptNote();
+  }
+  var bldgRadios = bldgSet.querySelectorAll('input[type=radio]');
+  for (var bi = 0; bi < bldgRadios.length; bi++){
+    bldgRadios[bi].addEventListener('change', function(){
+      bldgSet.setAttribute('aria-invalid', 'false');
+      paintBuildings();
+      fillApartments(this.value);
+    });
+  }
+  sel.addEventListener('change', syncAptNote);
 
   var form = document.getElementById('wq-park-form'),
       btn  = document.getElementById('p-submit'),
       wait = document.getElementById('p-msg-wait'),
       ok   = document.getElementById('p-msg-ok'),
       bad  = document.getElementById('p-msg-bad'),
-      badT = document.getElementById('p-msg-bad-t');
+      badT = document.getElementById('p-msg-bad-t'),
+      preview = document.getElementById('p-msg-preview');
 
   var reg = document.getElementById('p-reg');
   reg.addEventListener('input', function(){
     this.value = this.value.toUpperCase().replace(/[^A-Z0-9 ]/g,'');
   });
 
-  function show(el){ [wait,ok,bad].forEach(function(n){ n.hidden = (n !== el); }); }
+  function show(el){ [wait,ok,bad,preview].forEach(function(n){ n.hidden = (n !== el); }); }
+
+  form.addEventListener('reset', function(){
+    setTimeout(function(){
+      bldgSet.setAttribute('aria-invalid', 'false');
+      paintBuildings();
+      waitingApartment();
+    }, 0);
+  });
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
 
     var bads = [], fields = form.querySelectorAll('[required]');
+    var bldg = bldgSet.querySelector('input[type=radio]:checked');
+    if (!bldg){
+      bldgSet.setAttribute('aria-invalid', 'true');
+      bads.push(bldgSet.querySelector('input[type=radio]'));
+    } else {
+      bldgSet.setAttribute('aria-invalid', 'false');
+    }
     for (var i=0;i<fields.length;i++){
-      var f = fields[i], empty = (f.type === 'checkbox') ? !f.checked : !f.value.trim();
+      var f = fields[i];
+      if (f.type === 'radio') continue;    /* the pair is checked as one building choice */
+      var empty = (f.type === 'checkbox') ? !f.checked : !f.value.trim();
       f.setAttribute('aria-invalid', empty ? 'true' : 'false');
       if (empty) bads.push(f);
     }
@@ -459,10 +529,22 @@ own bay and both are registered.</p>
     }
 
     var data = {};
-    new FormData(form).forEach(function(v,k){ data[k] = (typeof v === 'string') ? v.trim() : v; });
+    new FormData(form).forEach(function(v,k){
+      if (k === 'building') return;        /* not a sheet column; apartment already says Swift 21 */
+      data[k] = (typeof v === 'string') ? v.trim() : v;
+    });
     data.declare = 'yes'; data.agree = 'yes';
     data.submitted = new Date().toISOString();
     data.action = 'park_register';
+
+    if (location.hostname !== 'www.wqmc.org'){
+      console.log('Preview: not submitted', data);
+      document.getElementById('p-msg-preview-t').textContent =
+        'Nothing was sent to the register. Apartment would be sent as ' + data.apartment + '.';
+      document.getElementById('p-msg-preview-json').textContent = JSON.stringify(data, null, 2);
+      show(preview);
+      return;
+    }
 
     if (!ENDPOINT){
       badT.innerHTML = '<b style="display:inline">Preview mode.</b> The form is complete and '

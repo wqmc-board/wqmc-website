@@ -53,10 +53,18 @@ anything is updated.</p>
 <div>
 <form class="wq-form" id="rc-form" novalidate>
 <h2 class="form-title">About you</h2>
-<div class="wq-row two">
-<div class="wq-f"><label for="rc-apt">Apartment <span class="req">*</span></label>
-<select id="rc-apt" name="apartment" required><option value="">Select the apartment</option></select></div>
-<div class="wq-f"><label for="rc-role">You are the <span class="req">*</span></label>
+<div class="wq-who">
+<fieldset class="wq-bldg-set" id="rc-bldg-set">
+<legend>Building <span class="req">*</span></legend>
+<div class="wq-bldg">
+<label class="wq-bldg-btn"><input type="radio" name="building" value="Swift" required><span>Swift House</span></label>
+<label class="wq-bldg-btn"><input type="radio" name="building" value="Soar" required><span>Soar House</span></label>
+</div>
+</fieldset>
+<div class="wq-f wq-flat"><label for="rc-apt">Apartment <span class="req">*</span></label>
+<select id="rc-apt" name="apartment" required class="is-waiting"><option value="">Choose your building first</option></select>
+<small id="rc-apt-code" hidden></small></div>
+<div class="wq-f wq-pair"><label for="rc-role">You are the <span class="req">*</span></label>
 <select id="rc-role" name="role" required><option value="">Select</option>
 <option>Leaseholder</option><option>Joint leaseholder</option><option>Tenant</option>
 <option>Letting agent</option><option>Managing agent (Letters)</option></select></div>
@@ -96,6 +104,8 @@ anything is updated.</p>
 <div class="wq-msg wait" id="rc-wait" role="status" hidden><b>Sending&hellip;</b>One moment.</div>
 <div class="wq-msg ok" id="rc-ok" role="status" hidden><b>Sent for approval.</b><span id="rc-ok-t">The directors have your request. You will get an email confirming it now, and another once it has been decided.</span></div>
 <div class="wq-msg bad" id="rc-bad" role="alert" hidden><b>Not sent.</b><span id="rc-bad-t"></span></div>
+<div class="wq-msg wait" id="rc-preview" role="status" hidden><b>Preview: not submitted</b><span id="rc-preview-t"></span>
+<pre id="rc-preview-json" class="wq-preview-json"></pre></div>
 </div>
 <div>
 <div class="panel"><h3>What happens next</h3>
@@ -151,22 +161,59 @@ correct what is held, email <a href="mailto:directors@wqmc.org">directors@wqmc.o
 (function(){
   /* Paste the deployed Apps Script web app address between the quotes to go live. */
   var ENDPOINT = "https://script.google.com/macros/s/AKfycbyLiUsMjiMAKhQtMncQDZjXoI8Y2GfwaetvRul_1xzaoPk1qYXJ1xRN_7-GhuNfnWwVxQ/exec";
+  var BLOCKS={Swift:36,Soar:35}; /* no apartment 13 in either house */
   var sel=document.getElementById('rc-apt');
-  [['Swift',36],['Soar',35]].forEach(function(b){ var g=document.createElement('optgroup'); g.label=b[0]+' House'; sel.appendChild(g);
-    for(var n=1;n<=b[1];n++){ if(n===13)continue; var o=document.createElement('option'); o.value=b[0]+' '+n; o.textContent='Apartment '+n; g.appendChild(o);} });
+  var bldgSet=document.getElementById('rc-bldg-set');
+  var aptNote=document.getElementById('rc-apt-code');
+  function syncAptNote(){
+    if(!sel.value){ aptNote.hidden=true; aptNote.textContent=''; return; }
+    aptNote.hidden=false; aptNote.textContent='Will be sent as '+sel.value+'.';
+  }
+  function paintBuildings(){
+    var radios=bldgSet.querySelectorAll('input[type=radio]');
+    for(var i=0;i<radios.length;i++) radios[i].parentNode.classList.toggle('is-on', radios[i].checked);
+  }
+  function fillApartments(block){
+    while(sel.firstChild) sel.removeChild(sel.firstChild);
+    var ph=document.createElement('option'); ph.value=''; ph.textContent='Select the apartment'; sel.appendChild(ph);
+    for(var n=1;n<=BLOCKS[block];n++){ if(n===13) continue;
+      var o=document.createElement('option'); o.value=block+' '+n; o.textContent='Apartment '+n; sel.appendChild(o); }
+    sel.classList.remove('is-waiting'); sel.value=''; syncAptNote();
+  }
+  var bldgRadios=bldgSet.querySelectorAll('input[type=radio]');
+  for(var bi=0;bi<bldgRadios.length;bi++) bldgRadios[bi].addEventListener('change', function(){
+    bldgSet.setAttribute('aria-invalid','false'); paintBuildings(); fillApartments(this.value);
+  });
+  sel.addEventListener('change', syncAptNote);
   var form=document.getElementById('rc-form'), role=document.getElementById('rc-role'), btn=document.getElementById('rc-submit');
   var W=document.getElementById('rc-wait'),O=document.getElementById('rc-ok'),B=document.getElementById('rc-bad'),BT=document.getElementById('rc-bad-t');
-  function show(el){ [W,O,B].forEach(function(n){ n.hidden=(n!==el); }); }
+  var P=document.getElementById('rc-preview');
+  function show(el){ [W,O,B,P].forEach(function(n){ n.hidden=(n!==el); }); }
   function sync(){ form.querySelectorAll('[data-not]').forEach(function(el){ el.hidden = role.value===el.dataset.not; }); }
   role.addEventListener('change',sync);
   form.addEventListener('submit',function(e){
     e.preventDefault(); var bads=[];
-    form.querySelectorAll('[required]').forEach(function(f){ var empty=f.type==='checkbox'?!f.checked:!f.value.trim(); f.setAttribute('aria-invalid',empty?'true':'false'); if(empty) bads.push(f); });
-    if(bads.length){ BT.textContent='Please complete the fields marked with an asterisk and tick the confirmation.'; show(B); return bads[0].focus(); }
+    var bldg=bldgSet.querySelector('input[type=radio]:checked');
+    if(!bldg){ bldgSet.setAttribute('aria-invalid','true'); bads.push(bldgSet.querySelector('input[type=radio]')); }
+    else bldgSet.setAttribute('aria-invalid','false');
+    form.querySelectorAll('[required]').forEach(function(f){
+      if(f.type==='radio') return;
+      var empty=f.type==='checkbox'?!f.checked:!f.value.trim(); f.setAttribute('aria-invalid',empty?'true':'false'); if(empty) bads.push(f);
+    });
+    if(bads.length){ BT.textContent='Please choose a building and apartment, complete the fields marked with an asterisk, and tick the confirmation.'; show(B); return bads[0].focus(); }
     var d={action:'record_change'}, any=false;
-    new FormData(form).forEach(function(v,k){ var el=form.elements[k]; if(el && el.closest && el.closest('[hidden]')) return; d[k]=String(v).trim(); });
+    new FormData(form).forEach(function(v,k){
+      if(k==='building') return; /* apartment already carries Swift 21 / Soar 32 */
+      var el=form.elements[k]; if(el && el.closest && el.closest('[hidden]')) return; d[k]=String(v).trim();
+    });
     ['lh1','lh2','tel1','tel2','email1','email2','tenant','tenantTel','clear_tenant'].forEach(function(k){ if(d[k]) any=true; });
     if(!any){ BT.textContent='Fill in at least one detail that has changed.'; return show(B); }
+    if(location.hostname !== 'www.wqmc.org'){
+      console.log('Preview: not submitted', d);
+      document.getElementById('rc-preview-t').textContent='Nothing was sent to the directors. Apartment would be sent as '+d.apartment+'.';
+      document.getElementById('rc-preview-json').textContent=JSON.stringify(d, null, 2);
+      return show(P);
+    }
     if(!ENDPOINT){ BT.innerHTML='<b style="display:inline">Preview mode.</b> The request is valid, but the page is not connected yet, so nothing has been sent.'; return show(B); }
     show(W); btn.disabled=true;
     fetch(ENDPOINT,{method:'POST',body:JSON.stringify(d),headers:{'Content-Type':'text/plain;charset=utf-8'}})
