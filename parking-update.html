@@ -58,10 +58,18 @@ register, a private link is emailed to that address. The link opens your record 
 for 24 hours. Nothing is shown on this page, so a bay or vehicle cannot be looked up by
 guesswork.</p></div>
 <form class="wq-form" id="u-req" novalidate>
-<div class="wq-row two">
-<div class="wq-f"><label for="u-apt">Apartment <span class="req">*</span></label>
-<select id="u-apt" name="apartment" required><option value="">Select your apartment</option></select></div>
-<div class="wq-f"><label for="u-email">Registered email <span class="req">*</span></label>
+<div class="wq-who">
+<fieldset class="wq-bldg-set" id="u-bldg-set">
+<legend>Building <span class="req">*</span></legend>
+<div class="wq-bldg">
+<label class="wq-bldg-btn"><input type="radio" name="building" value="Swift" required><span>Swift House</span></label>
+<label class="wq-bldg-btn"><input type="radio" name="building" value="Soar" required><span>Soar House</span></label>
+</div>
+</fieldset>
+<div class="wq-f wq-flat"><label for="u-apt">Apartment <span class="req">*</span></label>
+<select id="u-apt" name="apartment" required class="is-waiting"><option value="">Choose your building first</option></select>
+<small id="u-apt-code" hidden></small></div>
+<div class="wq-f wq-pair"><label for="u-email">Registered email <span class="req">*</span></label>
 <input id="u-email" name="email" type="email" autocomplete="email" required></div>
 </div>
 <div class="wq-sub"><button class="btn" type="submit">Email me my link</button></div>
@@ -70,6 +78,8 @@ guesswork.</p></div>
 register, a link is on its way. If nothing arrives within an hour, email
 <a href="mailto:directors@wqmc.org">directors@wqmc.org</a>.</div>
 <div class="wq-msg bad" id="u-req-bad" role="alert" hidden><b>Not sent.</b><span id="u-req-bad-t"></span></div>
+<div class="wq-msg wait" id="u-req-preview" role="status" hidden><b>Preview: not submitted</b><span id="u-req-preview-t"></span>
+<pre id="u-req-preview-json" class="wq-preview-json"></pre></div>
 </div>
 <div class="panel"><h3>Why a link rather than a password</h3>
 <p>Nobody has to remember a login. The link only goes to the email address already on the
@@ -134,6 +144,8 @@ need a director's agreement. You will get an email when it is approved; until th
 </form>
 <div class="wq-msg ok" id="u-ok" role="status" hidden><b>Update received.</b>A confirmation has been sent to your registered email.</div>
 <div class="wq-msg bad" id="u-bad" role="alert" hidden><b>Not sent.</b><span id="u-bad-t"></span></div>
+<div class="wq-msg wait" id="u-preview" role="status" hidden><b>Preview: not submitted</b><span id="u-preview-t"></span>
+<pre id="u-preview-json" class="wq-preview-json"></pre></div>
 
 <div class="panel" style="margin-top:2rem;max-width:46rem"><h3>Contractors working for the company</h3>
 <p>You do not need to do anything. The pump engineer, electricians, fire stopping, Colt and
@@ -180,22 +192,62 @@ the cleaners are booked by the board, which records their vehicles and makes sur
 (function(){
   /* Same Apps Script web app as the register form. */
   var ENDPOINT = "https://script.google.com/macros/s/AKfycbyLiUsMjiMAKhQtMncQDZjXoI8Y2GfwaetvRul_1xzaoPk1qYXJ1xRN_7-GhuNfnWwVxQ/exec";
+  var BLOCKS = {Swift:36, Soar:35}; /* no apartment 13 in either house */
   var q = new URLSearchParams(location.search), token = q.get('t');
   var aptSel = document.getElementById('u-apt');
-  [['Swift',36],['Soar',35]].forEach(function(b){
-    var g=document.createElement('optgroup'); g.label=b[0]+' House'; aptSel.appendChild(g);
-    for(var n=1;n<=b[1];n++){ if(n===13)continue; var o=document.createElement('option');
-      o.value=b[0]+' '+n; o.textContent='Apartment '+n; g.appendChild(o);} });
+  var bldgSet = document.getElementById('u-bldg-set');
+  var aptNote = document.getElementById('u-apt-code');
+  function syncAptNote(){
+    if(!aptSel.value){ aptNote.hidden = true; aptNote.textContent = ''; return; }
+    aptNote.hidden = false;
+    aptNote.textContent = 'Will be sent as ' + aptSel.value + '.';
+  }
+  function paintBuildings(){
+    var radios = bldgSet.querySelectorAll('input[type=radio]');
+    for(var i=0;i<radios.length;i++) radios[i].parentNode.classList.toggle('is-on', radios[i].checked);
+  }
+  function fillApartments(block){
+    while(aptSel.firstChild) aptSel.removeChild(aptSel.firstChild);
+    var ph=document.createElement('option'); ph.value=''; ph.textContent='Select your apartment'; aptSel.appendChild(ph);
+    for(var n=1;n<=BLOCKS[block];n++){ if(n===13) continue;
+      var o=document.createElement('option'); o.value=block+' '+n; o.textContent='Apartment '+n; aptSel.appendChild(o); }
+    aptSel.classList.remove('is-waiting'); aptSel.value=''; syncAptNote();
+  }
+  var bldgRadios = bldgSet.querySelectorAll('input[type=radio]');
+  for(var bi=0;bi<bldgRadios.length;bi++) bldgRadios[bi].addEventListener('change', function(){
+    bldgSet.setAttribute('aria-invalid','false'); paintBuildings(); fillApartments(this.value);
+  });
+  aptSel.addEventListener('change', syncAptNote);
 
   function show(ids,on){ ids.forEach(function(i){ document.getElementById(i).hidden = (i!==on); }); }
+  function previewStop(payload, textId, jsonId, ids, on){
+    if(location.hostname === 'www.wqmc.org') return false;
+    console.log('Preview: not submitted', payload);
+    document.getElementById(textId).textContent = payload.apartment
+      ? 'Nothing was sent to the register. Apartment would be sent as ' + payload.apartment + '.'
+      : 'Nothing was sent to the register.';
+    document.getElementById(jsonId).textContent = JSON.stringify(payload, null, 2);
+    show(ids, on);
+    return true;
+  }
 
   document.getElementById('u-req').addEventListener('submit',function(e){
     e.preventDefault();
+    var bldg = bldgSet.querySelector('input[type=radio]:checked');
     var a=aptSel.value, m=document.getElementById('u-email').value.trim();
-    if(!a||!/^\S+@\S+\.\S+$/.test(m)){ document.getElementById('u-req-bad-t').textContent='Select your apartment and enter a valid email.'; return show(['u-req-ok','u-req-bad'],'u-req-bad'); }
-    if(!ENDPOINT){ document.getElementById('u-req-bad-t').textContent='Preview mode: not connected to the register yet, so no email has been sent.'; return show(['u-req-ok','u-req-bad'],'u-req-bad'); }
-    fetch(ENDPOINT,{method:'POST',body:JSON.stringify({action:'park_link',apartment:a,email:m}),headers:{'Content-Type':'text/plain;charset=utf-8'}})
-      .finally(function(){ show(['u-req-ok','u-req-bad'],'u-req-ok'); }); /* same reply either way */
+    if(!bldg){
+      bldgSet.setAttribute('aria-invalid','true');
+      document.getElementById('u-req-bad-t').textContent='Choose Swift House or Soar House, then your apartment.';
+      bldgSet.querySelector('input[type=radio]').focus();
+      return show(['u-req-ok','u-req-bad','u-req-preview'],'u-req-bad');
+    }
+    bldgSet.setAttribute('aria-invalid','false');
+    if(!a||!/^\S+@\S+\.\S+$/.test(m)){ document.getElementById('u-req-bad-t').textContent='Select your apartment and enter a valid email.'; return show(['u-req-ok','u-req-bad','u-req-preview'],'u-req-bad'); }
+    var payload={action:'park_link',apartment:a,email:m};
+    if(previewStop(payload,'u-req-preview-t','u-req-preview-json',['u-req-ok','u-req-bad','u-req-preview'],'u-req-preview')) return;
+    if(!ENDPOINT){ document.getElementById('u-req-bad-t').textContent='Preview mode: not connected to the register yet, so no email has been sent.'; return show(['u-req-ok','u-req-bad','u-req-preview'],'u-req-bad'); }
+    fetch(ENDPOINT,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain;charset=utf-8'}})
+      .finally(function(){ show(['u-req-ok','u-req-bad','u-req-preview'],'u-req-ok'); }); /* same reply either way */
   });
 
   if(!token) return;
@@ -207,6 +259,7 @@ the cleaners are booked by the board, which records their vehicles and makes sur
     r.vehicles.forEach(function(v){ var o=document.createElement('option'); o.value=v.registration; o.textContent=v.registration+' \u2014 '+v.vehicle; old.appendChild(o); });
   }
   if(!ENDPOINT) fill({apartment:'Swift 12',bay:'27',vehicles:[{registration:'AB12 CDE',vehicle:'Volkswagen Golf, grey'}]});
+  else if(location.hostname !== 'www.wqmc.org') rec.textContent='Preview: the live register is not loaded from this page.';
   else fetch(ENDPOINT+'?action=park_record&t='+encodeURIComponent(token)).then(function(r){return r.json();})
     .then(function(r){ if(r.ok) fill(r); else rec.textContent='This link has expired. Please request a new one.'; });
 
@@ -230,8 +283,12 @@ the cleaners are booked by the board, which records their vehicles and makes sur
     var f=document.getElementById('u-from').value, t=document.getElementById('u-to').value;
     if(f && t && (t<f || (new Date(t)-new Date(f))/864e5>14)){ bt.textContent='The dates must run forwards and cover no more than 14 days.'; return show(['u-ok','u-bad'],'u-bad'); }
     var d={action:'park_update',token:token,submitted:new Date().toISOString()};
-    new FormData(form).forEach(function(v,k){ var el=form.elements[k]; if(el && !(el.closest&&el.closest('[hidden]'))) d[k]=String(v).trim(); });
-    if(!ENDPOINT||token==='preview'){ bt.textContent='Preview mode: the update is valid but nothing has been sent.'; return show(['u-ok','u-bad'],'u-bad'); }
+    new FormData(form).forEach(function(v,k){
+      if(k==='building') return;
+      var el=form.elements[k]; if(el && !(el.closest&&el.closest('[hidden]'))) d[k]=String(v).trim();
+    });
+    if(previewStop(d,'u-preview-t','u-preview-json',['u-ok','u-bad','u-preview'],'u-preview')) return;
+    if(!ENDPOINT||token==='preview'){ bt.textContent='Preview mode: the update is valid but nothing has been sent.'; return show(['u-ok','u-bad','u-preview'],'u-bad'); }
     fetch(ENDPOINT,{method:'POST',body:JSON.stringify(d),headers:{'Content-Type':'text/plain;charset=utf-8'}})
       .then(function(r){return r.json();}).then(function(r){ if(r.ok){ form.hidden=true; show(['u-ok','u-bad'],'u-ok'); } else { bt.textContent=r.error||'Please try again.'; show(['u-ok','u-bad'],'u-bad'); } })
       .catch(function(){ bt.textContent='Please try again, or email directors@wqmc.org.'; show(['u-ok','u-bad'],'u-bad'); });
